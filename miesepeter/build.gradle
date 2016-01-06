@@ -1,0 +1,24 @@
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+}
+
+
+dependencies {
+	compile 'org.sonarsource.sonarqube:sonar-plugin-api:5.2'
+    //compile 'org.slf4j:slf4j-api:1.7.12'
+    testCompile 'junit:junit:4.12'
+}
+
+jar {
+    manifest {
+        attributes(
+            "Plugin-Key": "miesepeter",
+            "Plugin-Class": "miesepeter.miese_plugin",
+            "Plugin-Version": "1.0",
+            "Plugin-Name": "Miesepeter plugin",
+            "Plugin-Description": "wurst description",
+            )
+    }
+}
