@@ -2,6 +2,7 @@ package miesepeter;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
@@ -37,26 +38,8 @@ public class miese_issues implements Sensor{
 		System.out.println("analyse issues");
 		for (InputFile inputFile : fs.inputFiles(fs.predicates().all())) {
 			System.out.println("inputfiles"+inputFile.path());
-			File file = inputFile.file();
 			
-			this.analyseFile(file,perspectives);
-			LineIterator it = null;
-			try {
-				it = FileUtils.lineIterator(file, "UTF-8");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				System.out.println("its broken");
-				e.printStackTrace();
-			}
-			try {
-			    while (it.hasNext()) {
-			    String line = it.nextLine();
-			    System.out.println(line);
-			    // do something with line
-			    }
-			} finally {
-			    it.close();
-			}
+			this.analyseFile(inputFile,perspectives);
 		      Issuable issuable = perspectives.as(Issuable.class, inputFile);
 		      issuable.addIssue(issuable.newIssueBuilder()
 		        .ruleKey(RuleKey.of("wurstname", "Wurstrule"))
@@ -71,9 +54,20 @@ public class miese_issues implements Sensor{
 		    }
 	}
 
-	private void analyseFile(File file, ResourcePerspectives perspectives2) {
+	private void analyseFile(InputFile inputFile, ResourcePerspectives perspectives2) {
+		File file = inputFile.file();
 		// TODO Auto-generated method stub
-		
+		Issuable issuable = perspectives.as(Issuable.class, inputFile);
+		miese_tleparser mTleP = new miese_tleparser();
+		ArrayList<Integer> myList = mTleP.parseFile(file);
+
+		for (Integer lineNumber : myList) {
+			issuable.addIssue(issuable.newIssueBuilder()
+		    		  .ruleKey(RuleKey.of("wurstname", "minorrule"))
+		    		  .message("found TLE IF")
+		    		  .line(lineNumber)
+		    		  .build());
+		}
 	}
 	
 
