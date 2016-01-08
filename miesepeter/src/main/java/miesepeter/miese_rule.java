@@ -9,25 +9,27 @@ public class miese_rule implements RulesDefinition{
 
 	@Override
 	public void define(Context context) {
-		 NewRepository repository = context.createRepository("java-example", "java").setName("My Custom Java Analyzer");
+		 NewRepository repository = context.createRepository("wurstname", "tle").setName("mywurst");
 
-		    // define a rule programmatically.
-		    NewRule x1Rule = repository.createRule("ExampleRule1")
-		      .setName("Stupid rule")
-		      .setHtmlDescription("Generate an issue on every line 1")
-
-		      // optional tags
+		    NewRule x1Rule = repository.createRule("Wurstrule")
+		      .setName("wurst Stupid rule")
+		      .setHtmlDescription("wurt Generate an issue on every line 1")
 		      .setTags("style", "stupid")
-
-		      // optional status. Default value is READY.
-		      .setStatus(RuleStatus.BETA)
-
-		      // default severity when the rule is activated on a Quality profile. Default value is MAJOR.
-		      .setSeverity(Severity.MINOR);
+		      .setStatus(RuleStatus.READY)
+		      .setSeverity(Severity.BLOCKER);
 
 		    x1Rule
 		      .setDebtSubCharacteristic("INTEGRATION_TESTABILITY")
-		      .setDebtRemediationFunction(x1Rule.debtRemediationFunctions().linearWithOffset("1h", "30min"));
+		      .setDebtRemediationFunction(x1Rule.debtRemediationFunctions().linearWithOffset("1h","1min"));
+		    
+		    NewRule x2Rule = repository.createRule("minorrule")
+		    		.setName("my minor rule")
+		    		.setHtmlDescription("minor description for test")
+		    		.setSeverity(Severity.MAJOR);
+		    
+		    x2Rule
+		    .setDebtSubCharacteristic("INTEGRATION_TESTABILITY")
+		    .setDebtRemediationFunction(x2Rule.debtRemediationFunctions().linearWithOffset("1h","1min"));
 
 		    // don't forget to call done() to finalize the definition
 		    repository.done();

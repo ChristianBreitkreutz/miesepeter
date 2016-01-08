@@ -17,6 +17,7 @@ public class miese_plugin extends SonarPlugin{
 		// rule
 		extensions.add(miese_rule.class);
 		extensions.add(miese_profile.class);
+		extensions.add(miese_issues.class);
 		return extensions;
 	}
 

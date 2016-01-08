@@ -21,10 +21,16 @@ public class miese_metric implements Metrics{
 			    .setQualitative(false)
 			    .setDomain(CoreMetrics.DOMAIN_GENERAL)
 			    .create();
+	  public static final Metric<Double> TechDEPT = new Metric.Builder("TechnicalDepts", "TECHDEPT", Metric.ValueType.FLOAT)
+			    .setDescription("Technical Dept")
+			    .setDirection(Metric.DIRECTION_WORST)
+			    .setQualitative(false)
+			    .setDomain(CoreMetrics.TECHNICAL_DEBT_KEY)
+			    .create();
 
 	@Override
 	public List<Metric> getMetrics() {
-		return Arrays.<Metric>asList(MESSAGE, RANDOM);
+		return Arrays.<Metric>asList(MESSAGE, RANDOM, TechDEPT);
 	}
 
 

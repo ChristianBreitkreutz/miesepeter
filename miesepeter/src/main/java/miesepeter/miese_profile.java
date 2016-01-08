@@ -9,6 +9,6 @@ public class miese_profile extends ProfileDefinition{
 
 	@Override
 	public RulesProfile createProfile(ValidationMessages validation) {
-		return RulesProfile.create("FooLint Rules", "tle");
+		return RulesProfile.create("rules for tle scan", "tle");
 	}
 }
