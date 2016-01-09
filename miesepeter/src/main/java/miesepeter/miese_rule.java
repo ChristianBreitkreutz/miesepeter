@@ -33,6 +33,14 @@ public class miese_rule implements RulesDefinition{
 
 		    // don't forget to call done() to finalize the definition
 		    repository.done();
+		    NewRepository TleRepo = context.createRepository("tleLogic", "tle").setName("TLE logig");
+		    NewRule TLElogic = TleRepo.createRule("tlelogic")
+		    		.setName("TLE logic blocks")
+		    		.setHtmlDescription("collect all TLE logic blocks from templates")
+		    		.setSeverity(Severity.MINOR);
+		    TLElogic.setDebtSubCharacteristic("INTEGRATION_TESTABILITY")
+		            .setDebtRemediationFunction(TLElogic.debtRemediationFunctions().linearWithOffset("1h", "1min"));
+		    TleRepo.done();
 		
 	}
 

@@ -27,12 +27,8 @@ public class miese_sensor implements Sensor {
 
 	@Override
 	public void analyse(Project module, SensorContext context) {
-		String value = "haha"+Math.random();//settings.getString(miese_properties.MY_PROPERTY_KEY);
-		System.out.println(value+"jajagenau");
 		for (InputFile inputFile : fs.inputFiles(fs.predicates().all())) {
-			//ner reached
-			System.out.println(inputFile.absolutePath());
-			context.saveMeasure(inputFile, new Measure<String>(miese_metric.MESSAGE, value));
+			context.saveMeasure(inputFile, new Measure<String>(miese_metric.MESSAGE, "some message"));
 			context.saveMeasure(inputFile, new Measure<String>(miese_metric.RANDOM, Math.random()));
 			context.saveMeasure(inputFile, new Measure<String>(miese_metric.TechDEPT, Math.random()));
 		    }
