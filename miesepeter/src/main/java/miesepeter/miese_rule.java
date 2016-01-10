@@ -39,7 +39,13 @@ public class miese_rule implements RulesDefinition{
 		    		.setHtmlDescription("collect all TLE logic blocks from templates")
 		    		.setSeverity(Severity.MINOR);
 		    TLElogic.setDebtSubCharacteristic("INTEGRATION_TESTABILITY")
-		            .setDebtRemediationFunction(TLElogic.debtRemediationFunctions().linearWithOffset("1h", "1min"));
+		            .setDebtRemediationFunction(TLElogic.debtRemediationFunctions().constantPerIssue("5min"));
+		    NewRule TLElogic_LOCAL = TleRepo.createRule("local")
+		    		.setName("TLE local and set")
+		    		.setHtmlDescription("use of tle local and set is a bad thing")
+		    		.setSeverity(Severity.MAJOR);
+		    TLElogic_LOCAL.setDebtSubCharacteristic("INTEGRATION_TESTABILITY")
+		    		.setDebtRemediationFunction(TLElogic.debtRemediationFunctions().constantPerIssue("6min"));
 		    TleRepo.done();
 		
 	}

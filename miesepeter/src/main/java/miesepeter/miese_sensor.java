@@ -28,11 +28,11 @@ public class miese_sensor implements Sensor {
 	@Override
 	public void analyse(Project module, SensorContext context) {
 		for (InputFile inputFile : fs.inputFiles(fs.predicates().all())) {
-			context.saveMeasure(inputFile, new Measure<String>(miese_metric.MESSAGE, "some message"));
+			context.saveMeasure(inputFile, new Measure<String>(miese_metric.MESSAGE, "file message"+Math.random()));
 			context.saveMeasure(inputFile, new Measure<String>(miese_metric.RANDOM, Math.random()));
 			context.saveMeasure(inputFile, new Measure<String>(miese_metric.TechDEPT, Math.random()));
 		    }
-			
+		context.saveMeasure(new Measure<String>(miese_metric.Global_MESSAGE, "project message"+Math.random()));
 	}
 
 	@Override

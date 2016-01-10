@@ -7,16 +7,21 @@ import java.util.ArrayList;
 
 
 public class miese_tleparser {
-	public ArrayList<Integer> parseFile(File file) {
-		System.out.println(file.getName());
+	private static String[] tleList = {"IF", "ELSIF", "ELSE", "LOCAL", "SET", "BLOCK", "WITH", "WITH_ERROR", "FUNCTION", "MENU", "CALCULATE", "PROGRESS", "REM"};
+	public ArrayList<miese_tleDTO> parseFile(File file) {
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(file));
 			String line;
 			int lineNumber = 1;
-			ArrayList<Integer> output = new ArrayList<>();
+			ArrayList<miese_tleDTO> output = new ArrayList<>();
 			while ((line = reader.readLine()) != null) {
-				if (line.matches(".*#IF.*")) {
-					output.add(lineNumber);
+				for (String tle : tleList) {
+					if (line.matches(".*#"+tle+".*")) {
+						miese_tleDTO dto = new miese_tleDTO();
+						dto.setLineNumber(lineNumber);
+						dto.setTleType(tle);
+						output.add(dto);
+					}
 				}
 				lineNumber++;
 			}
@@ -28,4 +33,5 @@ public class miese_tleparser {
 		}
 		return null;
 	}
+
 }

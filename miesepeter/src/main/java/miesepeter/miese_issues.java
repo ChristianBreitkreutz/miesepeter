@@ -32,24 +32,37 @@ public class miese_issues implements Sensor {
 
 	@Override
 	public void analyse(Project module, SensorContext context) {
-		System.out.println("analyse issues");
 		for (InputFile inputFile : fs.inputFiles(fs.predicates().all())) {
-			System.out.println("inputfiles" + inputFile.path());
-			this.analyseFile(inputFile, perspectives);
+			this.analyseFile( inputFile );
 		}
 	}
 
-	private void analyseFile(InputFile inputFile, ResourcePerspectives perspectives2) {
+	private void analyseFile(InputFile inputFile) {
 		File file = inputFile.file();
-		// TODO Auto-generated method stub
 		Issuable issuable = perspectives.as(Issuable.class, inputFile);
 		miese_tleparser mTleP = new miese_tleparser();
-		ArrayList<Integer> myList = mTleP.parseFile(file);
+		ArrayList<miese_tleDTO> myList = mTleP.parseFile(file);
 
-		for (Integer lineNumber : myList) {
-			issuable.addIssue(issuable.newIssueBuilder().ruleKey(RuleKey.of("tleLogic", "tlelogic"))
-					.message("found TLE #IF").line(lineNumber).build());
+		for (miese_tleDTO dto : myList) {
+			switch (dto.getTleType()) {
+			case "LOCAL":
+				triggerRule(issuable, "local", dto.getLineNumber(), "don't use tle local");
+				break;
+
+			case "SET":
+				triggerRule(issuable, "local", dto.getLineNumber(), "don't use tle set (and local)");
+				break;
+
+			default:
+				triggerRule(issuable, "tlelogic", dto.getLineNumber(), "default tle logic");
+				break;
+			}
 		}
 	}
 
+	private void triggerRule ( Issuable issuable, String ruleName, int lineNumber, String message ){
+		issuable.addIssue(issuable.newIssueBuilder().ruleKey(RuleKey.of("tleLogic", ruleName))//
+				.message(message).line(lineNumber).build());
+		
+	}
 }

@@ -9,6 +9,12 @@ import org.sonar.api.measures.Metrics;
 
 
 public class miese_metric implements Metrics{
+	public static final Metric<String> Global_MESSAGE = new Metric.Builder("global_message_key", "global_Message", Metric.ValueType.STRING)
+		    .setDescription("This is a metric to store a well known global_message")
+		    .setDirection(Metric.DIRECTION_WORST)
+		    .setQualitative(false)
+		    .setDomain(CoreMetrics.DOMAIN_GENERAL)
+		    .create();
 	  public static final Metric<String> MESSAGE = new Metric.Builder("message_key", "Message", Metric.ValueType.STRING)
 			    .setDescription("This is a metric to store a well known message")
 			    .setDirection(Metric.DIRECTION_WORST)
@@ -30,7 +36,7 @@ public class miese_metric implements Metrics{
 
 	@Override
 	public List<Metric> getMetrics() {
-		return Arrays.<Metric>asList(MESSAGE, RANDOM, TechDEPT);
+		return Arrays.<Metric>asList(MESSAGE, RANDOM, TechDEPT, Global_MESSAGE);
 	}
 
 
