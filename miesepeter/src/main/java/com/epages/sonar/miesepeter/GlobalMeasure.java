@@ -1,4 +1,4 @@
-package miesepeter;
+package com.epages.sonar.miesepeter;
 
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
@@ -10,12 +10,12 @@ import org.sonar.api.resources.Project;
 
 
 
-public class miese_sensor implements Sensor {
+public class GlobalMeasure implements Sensor {
 
 	private Settings settings;
 	private FileSystem fs;
 
-	public miese_sensor(Settings settings, FileSystem fs) {
+	public GlobalMeasure(Settings settings, FileSystem fs) {
 		this.settings = settings;
 		this.fs = fs;
 	}
@@ -28,11 +28,11 @@ public class miese_sensor implements Sensor {
 	@Override
 	public void analyse(Project module, SensorContext context) {
 		for (InputFile inputFile : fs.inputFiles(fs.predicates().all())) {
-			context.saveMeasure(inputFile, new Measure<String>(miese_metric.MESSAGE, "file message"+Math.random()));
-			context.saveMeasure(inputFile, new Measure<String>(miese_metric.RANDOM, Math.random()));
-			context.saveMeasure(inputFile, new Measure<String>(miese_metric.TechDEPT, Math.random()));
+			context.saveMeasure(inputFile, new Measure<String>(TleMetrics.MESSAGE, "file message"+Math.random()));
+			context.saveMeasure(inputFile, new Measure<String>(TleMetrics.RANDOM, Math.random()));
+			context.saveMeasure(inputFile, new Measure<String>(TleMetrics.TechDEPT, Math.random()));
 		    }
-		context.saveMeasure(new Measure<String>(miese_metric.Global_MESSAGE, "project message"+Math.random()));
+		context.saveMeasure(new Measure<String>(TleMetrics.Global_MESSAGE, "project message"+Math.random()));
 	}
 
 	@Override

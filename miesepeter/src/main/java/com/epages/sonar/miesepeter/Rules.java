@@ -1,11 +1,11 @@
-package miesepeter;
+package com.epages.sonar.miesepeter;
 
 import org.sonar.api.rule.Severity;
 import org.sonar.api.rule.RuleStatus;
 import org.sonar.api.server.rule.RulesDefinition;
 
 
-public class miese_rule implements RulesDefinition{
+public class Rules implements RulesDefinition{
 
 	@Override
 	public void define(Context context) {

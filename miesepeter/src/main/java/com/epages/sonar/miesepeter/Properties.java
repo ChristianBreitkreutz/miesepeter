@@ -1,4 +1,4 @@
-package miesepeter;
+package com.epages.sonar.miesepeter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import org.sonar.api.config.PropertyDefinition;
 
 
-public class miese_properties {
+public class Properties {
 	public static final String MY_PROPERTY_KEY = "sonar.example.myproperty";
 	public static List<PropertyDefinition> definitions() {
 	    return Arrays.asList(

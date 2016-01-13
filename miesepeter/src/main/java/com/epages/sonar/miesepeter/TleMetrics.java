@@ -1,4 +1,4 @@
-package miesepeter;
+package com.epages.sonar.miesepeter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -8,7 +8,7 @@ import org.sonar.api.measures.Metric;
 import org.sonar.api.measures.Metrics;
 
 
-public class miese_metric implements Metrics{
+public class TleMetrics implements Metrics{
 	public static final Metric<String> Global_MESSAGE = new Metric.Builder("global_message_key", "global_Message", Metric.ValueType.STRING)
 		    .setDescription("This is a metric to store a well known global_message")
 		    .setDirection(Metric.DIRECTION_WORST)

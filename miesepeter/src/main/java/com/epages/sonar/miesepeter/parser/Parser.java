@@ -1,4 +1,4 @@
-package miesepeter;
+package com.epages.sonar.miesepeter.parser;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -6,20 +6,20 @@ import java.io.File;
 import java.util.ArrayList;
 
 
-public class miese_tleparser {
+public class Parser {
 	private static String[] tleList = {"IF", "ELSIF", "ELSE", "LOCAL", "SET", "BLOCK", "WITH", "WITH_ERROR", "FUNCTION", "MENU", "CALCULATE", "PROGRESS", "REM"};
-	public ArrayList<miese_tleDTO> parseFile(File file) {
+	public ArrayList<TleLine> parseFile(File file) {
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(file));
 			String line;
 			int lineNumber = 1;
-			ArrayList<miese_tleDTO> output = new ArrayList<>();
+			ArrayList<TleLine> output = new ArrayList<>();
 			while ((line = reader.readLine()) != null) {
 				for (String tle : tleList) {
 					if (line.matches(".*#"+tle+".*")) {
-						miese_tleDTO dto = new miese_tleDTO();
+						TleLine dto = new TleLine();
 						dto.setLineNumber(lineNumber);
-						dto.setTleType(tle);
+						dto.setType(tle);
 						output.add(dto);
 					}
 				}
