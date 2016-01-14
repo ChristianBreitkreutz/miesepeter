@@ -14,7 +14,7 @@ import org.sonar.api.measures.Measure;
 import org.sonar.api.resources.Project;
 import org.sonar.api.rule.RuleKey;
 
-import com.epages.sonar.miesepeter.parser.TleLine;
+import com.epages.sonar.miesepeter.parser.LineIssue;
 import com.epages.sonar.miesepeter.parser.Parser;
 
 public class TleIssues implements Sensor {
@@ -42,32 +42,32 @@ public class TleIssues implements Sensor {
 	private void analyseFile(InputFile inputFile, SensorContext context) {
 		File file = inputFile.file();
 		Issuable issuable = perspectives.as(Issuable.class, inputFile);
-		Parser mTleP = new Parser();
-		ArrayList<TleLine> myList = mTleP.parseFile(file);
+		Parser TleParser = new Parser();
+		ArrayList<LineIssue> parseResults = TleParser.parseFile(file);
 
-		for (TleLine dto : myList) {
-			switch (dto.getType()) {
+		for (LineIssue result : parseResults) {
+			switch (result.type) {
 			case "LOCAL":
-				triggerRule(issuable, "local", dto.getLineNumber(), "don't use tle local");
+				triggerIssue(issuable, "locale", result.lineNumber, "don't use tle local");
 				break;
 
 			case "SET":
-				triggerRule(issuable, "local", dto.getLineNumber(), "don't use tle set (and local)");
+				triggerIssue(issuable, "locale", result.lineNumber, "don't use tle set (and local)");
 				break;
 
 			default:
-				triggerRule(issuable, "tlelogic", dto.getLineNumber(), "default tle logic");
+				triggerIssue(issuable, "generell", result.lineNumber, "default tle logic");
 				break;
 			}
 		}
 		// measures
-		context.saveMeasure(inputFile, new Measure<String>( CoreMetrics.COMPLEXITY, (double) myList.size()));
+		context.saveMeasure(inputFile, new Measure<String>( CoreMetrics.COMPLEXITY, (double) parseResults.size()));
 		context.saveMeasure(inputFile, new Measure<String>( CoreMetrics.NCLOC, (double) inputFile.lines()));
-		
+				
 	}
 
-	private void triggerRule ( Issuable issuable, String ruleName, int lineNumber, String message ){
-		issuable.addIssue(issuable.newIssueBuilder().ruleKey(RuleKey.of("tleLogic", ruleName))//
+	private void triggerIssue ( Issuable issuable, String ruleName, int lineNumber, String message ){
+		issuable.addIssue(issuable.newIssueBuilder().ruleKey(RuleKey.of("EpagesTemplateLanguage", ruleName))//
 				.message(message).line(lineNumber).build());
 		
 	}

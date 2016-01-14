@@ -9,43 +9,25 @@ public class Rules implements RulesDefinition{
 
 	@Override
 	public void define(Context context) {
-		 NewRepository repository = context.createRepository("wurstname", "tle").setName("mywurst");
-
-		    NewRule x1Rule = repository.createRule("Wurstrule")
-		      .setName("wurst Stupid rule")
-		      .setHtmlDescription("wurt Generate an issue on every line 1")
-		      .setTags("style", "stupid")
-		      .setStatus(RuleStatus.READY)
-		      .setSeverity(Severity.BLOCKER);
-
-		    x1Rule
-		      .setDebtSubCharacteristic("INTEGRATION_TESTABILITY")
-		      .setDebtRemediationFunction(x1Rule.debtRemediationFunctions().linearWithOffset("1h","1min"));
-		    
-		    NewRule x2Rule = repository.createRule("minorrule")
-		    		.setName("my minor rule")
-		    		.setHtmlDescription("minor description for test")
-		    		.setSeverity(Severity.MAJOR);
-		    
-		    x2Rule
-		    .setDebtSubCharacteristic("INTEGRATION_TESTABILITY")
-		    .setDebtRemediationFunction(x2Rule.debtRemediationFunctions().linearWithOffset("1h","1min"));
-
-		    // don't forget to call done() to finalize the definition
-		    repository.done();
-		    NewRepository TleRepo = context.createRepository("tleLogic", "tle").setName("TLE logig");
-		    NewRule TLElogic = TleRepo.createRule("tlelogic")
-		    		.setName("TLE logic blocks")
-		    		.setHtmlDescription("collect all TLE logic blocks from templates")
+		    NewRepository TleRepo = context.createRepository("EpagesTemplateLanguage", "tle").setName("TLE logic");
+		    NewRule TLElogic = TleRepo.createRule("generell")
+		    		.setName("all kind of TLE Elements")
+		    		.setHtmlDescription("collect all kind of TLE elements from templates")
 		    		.setSeverity(Severity.MINOR);
 		    TLElogic.setDebtSubCharacteristic("INTEGRATION_TESTABILITY")
 		            .setDebtRemediationFunction(TLElogic.debtRemediationFunctions().constantPerIssue("5min"));
-		    NewRule TLElogic_LOCAL = TleRepo.createRule("local")
-		    		.setName("TLE local and set")
-		    		.setHtmlDescription("use of tle local and set is a bad thing")
+		    NewRule tLElogic_LOCAL = TleRepo.createRule("locale")
+		    		.setName("TLE locale and set")
+		    		.setHtmlDescription("use of #LOCAL and #SET points to programming logic in template, belongs in controller")
 		    		.setSeverity(Severity.MAJOR);
-		    TLElogic_LOCAL.setDebtSubCharacteristic("INTEGRATION_TESTABILITY")
-		    		.setDebtRemediationFunction(TLElogic.debtRemediationFunctions().constantPerIssue("6min"));
+		    tLElogic_LOCAL.setDebtSubCharacteristic("INTEGRATION_TESTABILITY")
+		    		.setDebtRemediationFunction(TLElogic.debtRemediationFunctions().constantPerIssue("5min"));
+		    NewRule tlelogic_lonelySet = TleRepo.createRule("lonelySet")
+		    		.setName("set without local (loose of context)")
+		    		.setHtmlDescription("#SET without #LOCAL (high risk of site effects)")
+		    		.setSeverity(Severity.CRITICAL);
+		    tlelogic_lonelySet.setDebtSubCharacteristic("INTEGRATION_TESTABILITY")
+		    		.setDebtRemediationFunction(TLElogic.debtRemediationFunctions().constantPerIssue("10min"));
 		    TleRepo.done();
 		
 	}

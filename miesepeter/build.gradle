@@ -16,10 +16,10 @@ jar {
     manifest {
         attributes(
             "Plugin-Key": "miesepeter",
-            "Plugin-Class": "miesepeter.miese_plugin",
+            "Plugin-Class": "com.epages.sonar.miesepeter.TleParserPlugin",
             "Plugin-Version": "1.0",
             "Plugin-Name": "Miesepeter plugin",
-            "Plugin-Description": "wurst description",
+            "Plugin-Description": "sonar scanner for epages template engine (TLE)",
             )
     }
 }
