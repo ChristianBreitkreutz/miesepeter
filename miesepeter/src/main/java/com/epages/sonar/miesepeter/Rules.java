@@ -10,7 +10,7 @@ public class Rules implements RulesDefinition{
 	@Override
 	public void define(Context context) {
 		    NewRepository TleRepo = context.createRepository("EpagesTemplateLanguage", "tle").setName("TLE logic");
-		    NewRule TLElogic = TleRepo.createRule("generell")
+		    NewRule TLElogic = TleRepo.createRule("general")
 		    		.setName("all kind of TLE Elements")
 		    		.setHtmlDescription("collect all kind of TLE elements from templates")
 		    		.setSeverity(Severity.MINOR);

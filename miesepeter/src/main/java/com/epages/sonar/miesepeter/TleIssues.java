@@ -45,9 +45,9 @@ public class TleIssues implements Sensor {
 		Issuable issuable = perspectives.as(Issuable.class, inputFile);
 		Parser TleParser = new Parser();
 		ParseResult parseResult = TleParser.parseFile(file);
-		ArrayList<LineIssue> parseResults = parseResult.getGenericTle();
+		ArrayList<LineIssue> genericResults = parseResult.getGenericTle();
 
-		for (LineIssue result : parseResults) {
+		for (LineIssue result : genericResults) {
 			switch (result.type) {
 			case "LOCAL":
 				triggerIssue(issuable, "locale", result.lineNumber, "don't use tle local");
@@ -58,12 +58,19 @@ public class TleIssues implements Sensor {
 				break;
 
 			default:
-				triggerIssue(issuable, "generell", result.lineNumber, "default tle logic");
+				triggerIssue(issuable, "general", result.lineNumber, "default tle logic");
 				break;
 			}
 		}
+
+		// lonelySet
+		ArrayList<LineIssue> lonelySetResults = parseResult.getLonelySet();
+		for (LineIssue result : lonelySetResults) {
+			triggerIssue(issuable, "lonelySet", result.lineNumber, "magic #SET without a 'LOCALE");
+		}
+
 		// measures
-		context.saveMeasure(inputFile, new Measure<String>( CoreMetrics.COMPLEXITY, (double) parseResults.size()));
+		context.saveMeasure(inputFile, new Measure<String>( CoreMetrics.COMPLEXITY, (double) genericResults.size()));
 		context.saveMeasure(inputFile, new Measure<String>( CoreMetrics.NCLOC, (double) inputFile.lines()));
 				
 	}
