@@ -8,11 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileRunner {
-	private ArrayList<String> fileRunner;
 
-	public boolean loadFile (File file) {
+	public static List<String> loadFile (File file) {
 		BufferedReader reader;
-		fileRunner = new ArrayList<>();
+		List<String> fileRunner = new ArrayList<>();
 		try {
 			reader = new BufferedReader(new FileReader(file));
 			String line;
@@ -24,12 +23,8 @@ public class FileRunner {
 		} catch (IOException e) {
 			// TODO logging
 			e.printStackTrace();
-			return false;
+			return null;
 		}
-		return true;
-	}
-
-	public List<String> getFileRunner (){
 		return fileRunner;
 	}
 }
