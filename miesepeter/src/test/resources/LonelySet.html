@@ -1,0 +1,9 @@
+#LOCALE("OtherName") #LOCALE("MyName")
+    #SET("MyName", 123);
+    #SET("LonelySetValue","123");
+    #SET(    "OtherName"    ,     123    );
+    #LOCALE("ThirdName","abc")#SET("ThirdName","jaja")#ENDLOCALE
+    #LOCALE("LonelySetValue","abc") use the LonelySetValue in another scope in the same file
+        #SET("LonelySetValue","genau")
+    #ENDLOCALE
+#ENDLOCALE#ENDLOCALE
