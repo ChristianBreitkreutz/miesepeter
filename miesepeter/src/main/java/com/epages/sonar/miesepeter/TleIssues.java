@@ -15,6 +15,7 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.rule.RuleKey;
 
 import com.epages.sonar.miesepeter.parser.LineIssue;
+import com.epages.sonar.miesepeter.parser.ParseResult;
 import com.epages.sonar.miesepeter.parser.Parser;
 
 public class TleIssues implements Sensor {
@@ -43,7 +44,8 @@ public class TleIssues implements Sensor {
 		File file = inputFile.file();
 		Issuable issuable = perspectives.as(Issuable.class, inputFile);
 		Parser TleParser = new Parser();
-		ArrayList<LineIssue> parseResults = TleParser.parseFile(file);
+		ParseResult parseResult = TleParser.parseFile(file);
+		ArrayList<LineIssue> parseResults = parseResult.getGenericTle();
 
 		for (LineIssue result : parseResults) {
 			switch (result.type) {
