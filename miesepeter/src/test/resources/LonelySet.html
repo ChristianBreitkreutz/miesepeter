@@ -1,9 +1,21 @@
-#LOCALE("OtherName") #LOCALE("MyName")
+#LOCAL("OtherName") #LOCAL("MyName")
     #SET("MyName", 123);
     #SET("LonelySetValue","123");
     #SET(    "OtherName"    ,     123    );
-    #LOCALE("ThirdName","abc")#SET("ThirdName","jaja")#ENDLOCALE
-    #LOCALE("LonelySetValue","abc") use the LonelySetValue in another scope in the same file
+    #LOCAL("ThirdName","abc")#SET("ThirdName","jaja")#ENDLOCAL
+    #LOCAL("LonelySetValue","abc") use the LonelySetValue in another scope in the same file
         #SET("LonelySetValue","genau")
-    #ENDLOCALE
-#ENDLOCALE#ENDLOCALE
+    #ENDLOCAL
+#ENDLOCAL#ENDLOCAL
+
+
+#LOCAL("Delimiter", 0)
+
+  #IF(#DisplayGross)
+
+    #IF(#Shop.PriceTagInfoMultiProductGross)
+
+      * #Shop.PriceTagInfoMultiProductGross[0]
+
+      #SET("Delimiter", 1)
+

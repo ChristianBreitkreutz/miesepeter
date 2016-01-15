@@ -50,11 +50,11 @@ public class TleIssues implements Sensor {
 		for (LineIssue result : genericResults) {
 			switch (result.type) {
 			case "LOCAL":
-				triggerIssue(issuable, "locale", result.lineNumber, "don't use tle local");
+				triggerIssue(issuable, "local", result.lineNumber, "don't use tle local");
 				break;
 
 			case "SET":
-				triggerIssue(issuable, "locale", result.lineNumber, "don't use tle set (and local)");
+				triggerIssue(issuable, "local", result.lineNumber, "don't use tle set (and local)");
 				break;
 
 			default:
@@ -66,7 +66,7 @@ public class TleIssues implements Sensor {
 		// lonelySet
 		ArrayList<LineIssue> lonelySetResults = parseResult.getLonelySet();
 		for (LineIssue result : lonelySetResults) {
-			triggerIssue(issuable, "lonelySet", result.lineNumber, "magic #SET without a 'LOCALE");
+			triggerIssue(issuable, "lonelySet", result.lineNumber, "magic #SET without a 'LOCAL");
 		}
 
 		// measures

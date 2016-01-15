@@ -16,7 +16,7 @@ public class Rules implements RulesDefinition{
 		    		.setSeverity(Severity.MINOR);
 		    TLElogic.setDebtSubCharacteristic("INTEGRATION_TESTABILITY")
 		            .setDebtRemediationFunction(TLElogic.debtRemediationFunctions().constantPerIssue("5min"));
-		    NewRule tLElogic_LOCAL = TleRepo.createRule("locale")
+		    NewRule tLElogic_LOCAL = TleRepo.createRule("local")
 		    		.setName("TLE locale and set")
 		    		.setHtmlDescription("use of #LOCAL and #SET points to programming logic in template, belongs in controller")
 		    		.setSeverity(Severity.MAJOR);

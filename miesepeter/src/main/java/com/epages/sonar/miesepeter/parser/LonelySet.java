@@ -35,7 +35,7 @@ public class LonelySet implements TleParser {
 	private boolean hasDefinitionInSameFile (int startingLineNumber, String varName, List<String> linedFile){
 		boolean hasDefinition = false;
 		Pattern patternLOCALE = Pattern.compile(
-				".*#LOCALE"
+				".*#LOCAL"
 				+ Regex.OPENPARENTHESIS
 				+ Regex.UNLIMITEDWHITESPACE
 				+ Regex.DOUBLEQUOTE
