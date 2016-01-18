@@ -6,22 +6,22 @@ import java.util.TreeMap;
 
 public class BlockFinder {
 
-	private List<TleLine> completeFile;
+	private List<CodeLine> completeFile;
 
-	public BlockFinder(List<TleLine> completeFile) {
+	public BlockFinder(List<CodeLine> completeFile) {
 		this.completeFile = completeFile;
 	}
 
-	public List<List<TleLine>> getBlocks(String blocktype) {
-		List<List<TleLine>> blocks = new ArrayList<>();
-		List<TleLine> elementblocks = new ArrayList<>();
+	public List<List<CodeLine>> getBlocks(String blocktype) {
+		List<List<CodeLine>> blocks = new ArrayList<>();
+		List<CodeLine> elementblocks = new ArrayList<>();
 		int blockLength = 0; // TODO: waere ne coole metric
 		int blockComplexity = 0; // TODO: waere ne coole metric
 		int openBlocks = 0;
 
-		for (TleLine tleLine : completeFile) {
-			List<Integer> startElements = findElementsInLine(tleLine.type, "#" + blocktype);
-			List<Integer> endElements = findElementsInLine(tleLine.type, "#END" + blocktype);
+		for (CodeLine tleLine : completeFile) {
+			List<Integer> startElements = findElementsInLine(tleLine.text, "#" + blocktype);
+			List<Integer> endElements = findElementsInLine(tleLine.text, "#END" + blocktype);
 			openBlocks += (startElements.size() - endElements.size());
 
 			if (startElements.size() > 0 || endElements.size() > 0 || openBlocks > 0) {
@@ -33,7 +33,7 @@ public class BlockFinder {
 				}
 				if (openBlocks == 0 && startElements.size() == endElements.size()) {
 					TreeMap<Integer, String> startsAndEnds = mergeStartAndEndElements(startElements, endElements);
-					List<List<TleLine>> blocksInLine = catchInlineBlocks(blocktype, tleLine, startsAndEnds);
+					List<List<CodeLine>> blocksInLine = catchInlineBlocks(blocktype, tleLine, startsAndEnds);
 					blocks.addAll(blocksInLine);
 				}
 			}
@@ -41,8 +41,8 @@ public class BlockFinder {
 		return blocks;
 	}
 
-	private List<List<TleLine>> catchInlineBlocks(String blocktype, TleLine tleLine, TreeMap<Integer, String> startsAndEnds) {
-		List<List<TleLine>> blocksInLine = new ArrayList<>();
+	private List<List<CodeLine>> catchInlineBlocks(String blocktype, CodeLine tleLine, TreeMap<Integer, String> startsAndEnds) {
+		List<List<CodeLine>> blocksInLine = new ArrayList<>();
 		int elementBalance = 0;
 		int oldSplitPosition = 0;
 		for (int startOrEndElement : startsAndEnds.keySet()) {
@@ -54,7 +54,7 @@ public class BlockFinder {
 			}
 			if (elementBalance == 0) {
 				int splitPosition = startOrEndElement + ("#END" + blocktype).length();
-				List<TleLine> OneLine = createSubBlock( tleLine, oldSplitPosition, splitPosition);
+				List<CodeLine> OneLine = createSubBlock( tleLine, oldSplitPosition, splitPosition);
 				OneLine = cleanUpBlock(OneLine, blocktype);
 				oldSplitPosition = splitPosition;
 				blocksInLine.add( OneLine);
@@ -63,10 +63,10 @@ public class BlockFinder {
 		return blocksInLine;
 	}
 
-	private List<TleLine> createSubBlock(TleLine tleLine, int oldSplitPosition, int splitPosition) {
-		String splitLine = tleLine.type;
-		TleLine newLine = new TleLine(tleLine.lineNumber, splitLine.substring(oldSplitPosition, splitPosition));
-		List<TleLine> OneLine = new ArrayList<>();
+	private List<CodeLine> createSubBlock(CodeLine codeLine, int oldSplitPosition, int splitPosition) {
+		String splitLine = codeLine.text;
+		CodeLine newLine = new CodeLine(codeLine.lineNumber, splitLine.substring(oldSplitPosition, splitPosition));
+		List<CodeLine> OneLine = new ArrayList<>();
 		OneLine.add(newLine);
 		return OneLine;
 	}
@@ -82,20 +82,20 @@ public class BlockFinder {
 		return startsAndEnds;
 	}
 
-	private List<TleLine> cleanUpBlock(List<TleLine> block, String blocktype) {
-		String firstLine = block.get(0).type;
+	private List<CodeLine> cleanUpBlock(List<CodeLine> block, String blocktype) {
+		String firstLine = block.get(0).text;
 		int firstLineNumber = block.get(0).lineNumber;
 		int firstLetter = firstLine.indexOf("#" + blocktype);
 		String newLine = firstLine.substring(firstLetter);
-		block.set(0, new TleLine(firstLineNumber, newLine));
+		block.set(0, new CodeLine(firstLineNumber, newLine));
 
 		int lastIndex = block.size() - 1;
-		String lastLine = block.get(lastIndex).type;
+		String lastLine = block.get(lastIndex).text;
 		int lastLineNumber = block.get(lastIndex).lineNumber;
 		String endElement = "#END" + blocktype;
 		int lastLetter = lastLine.lastIndexOf(endElement) + endElement.length();
 		newLine = lastLine.substring(0, lastLetter);
-		block.set(lastIndex, new TleLine(lastLineNumber, newLine));
+		block.set(lastIndex, new CodeLine(lastLineNumber, newLine));
 		return block;
 	}
 

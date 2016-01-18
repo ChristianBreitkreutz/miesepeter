@@ -14,7 +14,7 @@ import org.sonar.api.measures.Measure;
 import org.sonar.api.resources.Project;
 import org.sonar.api.rule.RuleKey;
 
-import com.epages.sonar.miesepeter.parser.TleLine;
+import com.epages.sonar.miesepeter.parser.IssueLine;
 import com.epages.sonar.miesepeter.parser.ParseResult;
 import com.epages.sonar.miesepeter.parser.Parser;
 
@@ -45,9 +45,9 @@ public class TleIssues implements Sensor {
 		Issuable issuable = perspectives.as(Issuable.class, inputFile);
 		Parser TleParser = new Parser();
 		ParseResult parseResult = TleParser.parseFile(file);
-		ArrayList<TleLine> genericResults = parseResult.getGenericTle();
+		ArrayList<IssueLine> genericResults = parseResult.getGenericTle();
 
-		for (TleLine result : genericResults) {
+		for (IssueLine result : genericResults) {
 			switch (result.type) {
 			case "LOCAL":
 				triggerIssue(issuable, "local", result.lineNumber, "don't use tle local");
@@ -64,8 +64,8 @@ public class TleIssues implements Sensor {
 		}
 
 		// lonelySet
-		ArrayList<TleLine> lonelySetResults = parseResult.getLonelySet();
-		for (TleLine result : lonelySetResults) {
+		ArrayList<IssueLine> lonelySetResults = parseResult.getLonelySet();
+		for (IssueLine result : lonelySetResults) {
 			triggerIssue(issuable, "lonelySet", result.lineNumber, "magic #SET without a 'LOCAL");
 		}
 
