@@ -14,58 +14,72 @@ public class BlockFinder {
 
 	public List<List<TleLine>> getBlocks(String blocktype) {
 		List<List<TleLine>> blocks = new ArrayList<>();
-		List<TleLine> incommingList = new ArrayList<>();
+		List<TleLine> elementblocks = new ArrayList<>();
 		int blockLength = 0; // TODO: waere ne coole metric
 		int blockComplexity = 0; // TODO: waere ne coole metric
 		int openBlocks = 0;
 
 		for (TleLine tleLine : completeFile) {
-			List<Integer> startElements = findElements(tleLine.type, "#" + blocktype);
-			List<Integer> endElements = findElements(tleLine.type, "#END" + blocktype);
+			List<Integer> startElements = findElementsInLine(tleLine.type, "#" + blocktype);
+			List<Integer> endElements = findElementsInLine(tleLine.type, "#END" + blocktype);
 			openBlocks += (startElements.size() - endElements.size());
 
 			if (startElements.size() > 0 || endElements.size() > 0 || openBlocks > 0) {
-				incommingList.add(tleLine); // add next line
+				elementblocks.add(tleLine); // add next line
 				if (openBlocks == 0) {
-					incommingList = cleanUpBlock(incommingList, blocktype);
-					blocks.add(incommingList);
-					incommingList = new ArrayList<>();
-					if (startElements.size() == endElements.size()) {
-						blocks.remove(blocks.size()-1);// bug somewhere upwards so override last element
-						TreeMap<Integer, String> startsAndEnds = new TreeMap<>();
-						for (Integer integer : startElements) {
-							startsAndEnds.put(integer, "Start");
-						}
-						for (Integer integer : endElements) {
-							startsAndEnds.put(integer, "End");
-						}
-						int innerBlock = 0;
-						int oldSplitPosition = 0;
-						for (int elem : startsAndEnds.keySet()) {
-							if (startsAndEnds.get(elem) == "Start") {
-								innerBlock++;
-							}
-							if (startsAndEnds.get(elem) == "End") {
-								innerBlock--;
-							}
-							if (innerBlock == 0) {
-								int splitPosition = elem + ("#END" + blocktype).length();
-								String splitLine = tleLine.type;
-								TleLine newLine = new TleLine(tleLine.lineNumber,
-										splitLine.substring(oldSplitPosition, splitPosition));
-								List<TleLine> OneLine = new ArrayList<>();
-								OneLine.add(newLine);
-								OneLine = cleanUpBlock(OneLine, blocktype);
-								blocks.add( OneLine);
-								incommingList = new ArrayList<>();
-								oldSplitPosition = splitPosition;
-							}
-						}
-					}
+					elementblocks = cleanUpBlock(elementblocks, blocktype);
+					blocks.add(elementblocks);
+					elementblocks = new ArrayList<>();
+				}
+				if (openBlocks == 0 && startElements.size() == endElements.size()) {
+					TreeMap<Integer, String> startsAndEnds = mergeStartAndEndElements(startElements, endElements);
+					List<List<TleLine>> blocksInLine = catchInlineBlocks(blocktype, tleLine, startsAndEnds);
+					blocks.addAll(blocksInLine);
 				}
 			}
 		}
 		return blocks;
+	}
+
+	private List<List<TleLine>> catchInlineBlocks(String blocktype, TleLine tleLine, TreeMap<Integer, String> startsAndEnds) {
+		List<List<TleLine>> blocksInLine = new ArrayList<>();
+		int elementBalance = 0;
+		int oldSplitPosition = 0;
+		for (int startOrEndElement : startsAndEnds.keySet()) {
+			if (startsAndEnds.get(startOrEndElement) == "Start") {
+				elementBalance++;
+			}
+			if (startsAndEnds.get(startOrEndElement) == "End") {
+				elementBalance--;
+			}
+			if (elementBalance == 0) {
+				int splitPosition = startOrEndElement + ("#END" + blocktype).length();
+				List<TleLine> OneLine = createSubBlock( tleLine, oldSplitPosition, splitPosition);
+				OneLine = cleanUpBlock(OneLine, blocktype);
+				oldSplitPosition = splitPosition;
+				blocksInLine.add( OneLine);
+			}
+		}
+		return blocksInLine;
+	}
+
+	private List<TleLine> createSubBlock(TleLine tleLine, int oldSplitPosition, int splitPosition) {
+		String splitLine = tleLine.type;
+		TleLine newLine = new TleLine(tleLine.lineNumber, splitLine.substring(oldSplitPosition, splitPosition));
+		List<TleLine> OneLine = new ArrayList<>();
+		OneLine.add(newLine);
+		return OneLine;
+	}
+
+	private TreeMap<Integer, String> mergeStartAndEndElements(List<Integer> startElements, List<Integer> endElements) {
+		TreeMap<Integer, String> startsAndEnds = new TreeMap<>();
+		for (Integer integer : startElements) {
+			startsAndEnds.put(integer, "Start");
+		}
+		for (Integer integer : endElements) {
+			startsAndEnds.put(integer, "End");
+		}
+		return startsAndEnds;
 	}
 
 	private List<TleLine> cleanUpBlock(List<TleLine> block, String blocktype) {
@@ -85,13 +99,13 @@ public class BlockFinder {
 		return block;
 	}
 
-	private List<Integer> findElements(String line, String searchTerm) {
+	private List<Integer> findElementsInLine(String line, String searchTerm) {
 		List<Integer> letterPosition = new ArrayList<>();
 		int lenghtSearchTerm = searchTerm.length();
 		int index = 0;
 		while (true) {
 			index = line.indexOf(searchTerm, index);
-			if (index == -1) {
+			if (index == -1) { // -1 == nothing found
 				break;
 			}
 			letterPosition.add(index);
