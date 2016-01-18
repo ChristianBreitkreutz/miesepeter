@@ -1,15 +1,19 @@
-package com.epages.sonar.miesepeter.parser;
+package com.epages.sonar.miesepeter.parser.issues;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.epages.sonar.miesepeter.parser.TleLine;
+import com.epages.sonar.miesepeter.parser.Regex;
+import com.epages.sonar.miesepeter.parser.TleParser;
+
 public class LonelySet implements TleParser {
 	@Override
-	public ArrayList<LineIssue> parse (List<String> linedFile){
+	public ArrayList<TleLine> parse (List<String> linedFile){
 		int lineNumber = 0;
-		ArrayList<LineIssue> lineIssues = new ArrayList<>();
+		ArrayList<TleLine> lineIssues = new ArrayList<>();
 				Pattern patternSET = Pattern.compile(
 						".*#SET"
 						+ Regex.OPENPARENTHESIS
@@ -25,7 +29,7 @@ public class LonelySet implements TleParser {
 				Matcher matcher = patternSET.matcher(line);
 				if (matcher.find()) {
 					if (!hasDefinitionInSameFile(lineNumber,matcher.group(1),linedFile)) {
-						lineIssues.add(new LineIssue(lineNumber,"LonelySet"));
+						lineIssues.add(new TleLine(lineNumber,"LonelySet"));
 					}
 				}
 			lineNumber++;

@@ -1,19 +1,22 @@
-package com.epages.sonar.miesepeter.parser;
+package com.epages.sonar.miesepeter.parser.issues;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.epages.sonar.miesepeter.parser.TleLine;
+import com.epages.sonar.miesepeter.parser.TleParser;
+
 public class GenericTle implements TleParser{
 
 	@Override
-	public ArrayList<LineIssue> parse(List<String> linedFile) {
+	public ArrayList<TleLine> parse(List<String> linedFile) {
 		String[] tleList = {"IF", "ELSIF", "ELSE", "LOCAL", "SET", "BLOCK", "WITH", "WITH_ERROR", "FUNCTION", "MENU", "CALCULATE", "PROGRESS", "REM", "OR", "AND"};
 		int lineNumber = 0;
-		ArrayList<LineIssue> lineIssues = new ArrayList<>();
+		ArrayList<TleLine> lineIssues = new ArrayList<>();
 		for (String line : linedFile) {
 			for (String tle : tleList) {
 				if (line.matches(".*#"+tle+".*")) {
-					lineIssues.add(new LineIssue(lineNumber,tle));
+					lineIssues.add(new TleLine(lineNumber,tle));
 				}
 			}
 			lineNumber++;

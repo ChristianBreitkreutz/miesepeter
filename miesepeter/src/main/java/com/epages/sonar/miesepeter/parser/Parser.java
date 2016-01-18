@@ -4,6 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.epages.sonar.miesepeter.parser.issues.GenericTle;
+import com.epages.sonar.miesepeter.parser.issues.LonelySet;
+
 
 public class Parser {
 	public ParseResult parseFile(File file) {
