@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
+
 public class BlockFinder {
 
 	private List<CodeLine> completeFile;
@@ -12,11 +13,10 @@ public class BlockFinder {
 		this.completeFile = completeFile;
 	}
 
-	public List<List<CodeLine>> getCodeBlocks(String blocktype) {
-		List<List<CodeLine>> codeBlocks = new ArrayList<>();
-		List<CodeLine> codeBlock = new ArrayList<>();
-		int blockLength = 0; // TODO: waere ne coole metric
-		int blockComplexity = 0; // TODO: waere ne coole metric
+	public List<CodeBlock> getCodeBlocks(String blocktype) {
+		List<CodeBlock> codeBlocksInFile = new ArrayList<>();
+		List<CodeLine> subCodeBlock = new ArrayList<>();
+		int blockComplexity = 0;
 		int openBlocks = 0;
 
 		for (CodeLine codeLine : completeFile) {
@@ -25,30 +25,38 @@ public class BlockFinder {
 			openBlocks += (startElements.size() - endElements.size());
 
 			if (startElements.size() > 0 || endElements.size() > 0 || openBlocks > 0) {
-				codeBlock.add(codeLine); // add next line
+				blockComplexity += startElements.size();
+				subCodeBlock.add(codeLine); // add next line
 				if (openBlocks == 0) {
 					if (startElements.size() == endElements.size()) {
 						TreeMap<Integer, String> startsAndEnds = mergeStartAndEndElements(startElements, endElements);
-						List<List<CodeLine>> blocksInLine = catchInlineBlocks(blocktype, codeLine, startsAndEnds);
-						codeBlocks.addAll(blocksInLine);
+						List<CodeBlock> blocksInLine = catchInlineBlocks(blocktype, codeLine, startsAndEnds);
+						codeBlocksInFile.addAll(blocksInLine);
 					}else {
-						codeBlock = cleanUpCodeBlock(codeBlock, blocktype);
-						codeBlocks.add(codeBlock);
-						codeBlock = new ArrayList<>();
+						subCodeBlock = cleanUpInlineCodeBlock(subCodeBlock, blocktype);
+						CodeBlock codeBlock = new CodeBlock();
+						codeBlock.setBlock(subCodeBlock);
+						codeBlock.setLenght(subCodeBlock.size());
+						codeBlock.setComplexity(blockComplexity);
+						codeBlocksInFile.add(codeBlock);
+						blockComplexity = 0;
+						subCodeBlock = new ArrayList<>();
 					}
 				}
 			}
 		}
-		return codeBlocks;
+		return codeBlocksInFile;
 	}
 
-	private List<List<CodeLine>> catchInlineBlocks(String blocktype, CodeLine codeLine, TreeMap<Integer, String> startsAndEnds) {
-		List<List<CodeLine>> blocksInLine = new ArrayList<>();
+	private List<CodeBlock> catchInlineBlocks(String blocktype, CodeLine codeLine, TreeMap<Integer, String> startsAndEnds) {
+		List<CodeBlock> blocksInLine = new ArrayList<>();
 		int elementBalance = 0;
 		int oldSplitPosition = 0;
+		int blockComplexity = 0;
 		for (int startOrEndElement : startsAndEnds.keySet()) {
 			if (startsAndEnds.get(startOrEndElement) == "Start") {
 				elementBalance++;
+				blockComplexity++;
 			}
 			if (startsAndEnds.get(startOrEndElement) == "End") {
 				elementBalance--;
@@ -56,8 +64,13 @@ public class BlockFinder {
 			if (elementBalance == 0) {
 				int splitPosition = startOrEndElement + ("#END" + blocktype).length();
 				List<CodeLine> inlineCodeBlock = createInlineCodeBlock( codeLine, oldSplitPosition, splitPosition);
-				inlineCodeBlock = cleanUpCodeBlock(inlineCodeBlock, blocktype);
-				blocksInLine.add( inlineCodeBlock);
+				inlineCodeBlock = cleanUpInlineCodeBlock(inlineCodeBlock, blocktype);
+				CodeBlock codeBlock = new CodeBlock();
+				codeBlock.setBlock(inlineCodeBlock);
+				codeBlock.setLenght(inlineCodeBlock.size());
+				codeBlock.setComplexity(blockComplexity);
+				blockComplexity = 0;
+				blocksInLine.add( codeBlock);
 				oldSplitPosition = splitPosition;
 			}
 		}
@@ -83,7 +96,7 @@ public class BlockFinder {
 		return startsAndEnds;
 	}
 
-	private List<CodeLine> cleanUpCodeBlock(List<CodeLine> codeBlock, String blocktype) {
+	private List<CodeLine> cleanUpInlineCodeBlock(List<CodeLine> codeBlock, String blocktype) {
 		String firstLine = codeBlock.get(0).text;
 		int firstLineNumber = codeBlock.get(0).lineNumber;
 		int positionBeforeFirstElement = firstLine.indexOf("#" + blocktype);
