@@ -27,21 +27,23 @@ public class BlockFinder {
 			if (startElements.size() > 0 || endElements.size() > 0 || openBlocks > 0) {
 				elementblocks.add(tleLine); // add next line
 				if (openBlocks == 0) {
-					elementblocks = cleanUpBlock(elementblocks, blocktype);
-					blocks.add(elementblocks);
-					elementblocks = new ArrayList<>();
-				}
-				if (openBlocks == 0 && startElements.size() == endElements.size()) {
-					TreeMap<Integer, String> startsAndEnds = mergeStartAndEndElements(startElements, endElements);
-					List<List<CodeLine>> blocksInLine = catchInlineBlocks(blocktype, tleLine, startsAndEnds);
-					blocks.addAll(blocksInLine);
+					if (startElements.size() == endElements.size()) {
+						TreeMap<Integer, String> startsAndEnds = mergeStartAndEndElements(startElements, endElements);
+						List<List<CodeLine>> blocksInLine = catchInlineBlocks(blocktype, tleLine, startsAndEnds);
+						blocks.addAll(blocksInLine);
+					}else {
+						elementblocks = cleanUpBlock(elementblocks, blocktype);
+						blocks.add(elementblocks);
+						elementblocks = new ArrayList<>();
+					}
 				}
 			}
 		}
 		return blocks;
 	}
 
-	private List<List<CodeLine>> catchInlineBlocks(String blocktype, CodeLine tleLine, TreeMap<Integer, String> startsAndEnds) {
+	private List<List<CodeLine>> catchInlineBlocks(String blocktype, CodeLine codeLine, TreeMap<Integer, String> startsAndEnds) {
+		System.out.println(codeLine.text);
 		List<List<CodeLine>> blocksInLine = new ArrayList<>();
 		int elementBalance = 0;
 		int oldSplitPosition = 0;
@@ -54,7 +56,7 @@ public class BlockFinder {
 			}
 			if (elementBalance == 0) {
 				int splitPosition = startOrEndElement + ("#END" + blocktype).length();
-				List<CodeLine> OneLine = createSubBlock( tleLine, oldSplitPosition, splitPosition);
+				List<CodeLine> OneLine = createSubBlock( codeLine, oldSplitPosition, splitPosition);
 				OneLine = cleanUpBlock(OneLine, blocktype);
 				oldSplitPosition = splitPosition;
 				blocksInLine.add( OneLine);
@@ -100,7 +102,7 @@ public class BlockFinder {
 	}
 
 	private List<Integer> findElementsInLine(String line, String searchTerm) {
-		List<Integer> letterPosition = new ArrayList<>();
+		List<Integer> indices = new ArrayList<>();
 		int lenghtSearchTerm = searchTerm.length();
 		int index = 0;
 		while (true) {
@@ -108,9 +110,9 @@ public class BlockFinder {
 			if (index == -1) { // -1 == nothing found
 				break;
 			}
-			letterPosition.add(index);
+			indices.add(index);
 			index += lenghtSearchTerm;
 		}
-		return letterPosition;
+		return indices;
 	}
 }
