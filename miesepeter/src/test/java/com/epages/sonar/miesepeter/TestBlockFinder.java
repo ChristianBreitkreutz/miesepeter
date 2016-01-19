@@ -18,7 +18,7 @@ public class TestBlockFinder {
 		incommingList.add(new CodeLine(3,"before#LOOP(#one)#LOOP(#inner)loop1#ENDLOOP#ENDLOOPafter"));
 
 		BlockFinder blockfinder = new BlockFinder(incommingList);
-		List<List<CodeLine>> blocks = blockfinder.getBlocks("LOOP");
+		List<List<CodeLine>> blocks = blockfinder.getCodeBlocks("LOOP");
 
 		List<CodeLine> block1 =  blocks.get(0);
 		assertEquals(block1.get(0).lineNumber, 3);
@@ -31,7 +31,7 @@ public class TestBlockFinder {
 		incommingList.add(new CodeLine(3,"_before_#LOOP(#one)#LOOP(#inner)loop1#ENDLOOP#ENDLOOP_after_before_#LOOP(#two)loop2#ENDLOOP_after"));
 		
 		BlockFinder blockfinder = new BlockFinder(incommingList);
-		List<List<CodeLine>> blocks = blockfinder.getBlocks("LOOP");
+		List<List<CodeLine>> blocks = blockfinder.getCodeBlocks("LOOP");
 		
 		List<CodeLine> block1 =  blocks.get(0);
 		assertEquals(block1.get(0).lineNumber, 3);
@@ -58,7 +58,7 @@ public class TestBlockFinder {
 		incommingList.add(new CodeLine(10,"a trird extra line"));
 
 		BlockFinder blockfinder = new BlockFinder(incommingList);
-		List<List<CodeLine>> blocks = blockfinder.getBlocks("LOOP");
+		List<List<CodeLine>> blocks = blockfinder.getCodeBlocks("LOOP");
 
 		List<CodeLine> block1 =  blocks.get(0);
 		assertEquals(block1.get(0).lineNumber, 2);
