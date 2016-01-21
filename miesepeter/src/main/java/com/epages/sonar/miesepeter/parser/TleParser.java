@@ -4,5 +4,5 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface TleParser {
-	ArrayList<IssueLine> parse(List<String> linedFile);
+	ArrayList<IssueLine> parse(List<CodeLine> linedFile);
 }

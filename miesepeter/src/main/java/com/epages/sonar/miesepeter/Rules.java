@@ -28,6 +28,19 @@ public class Rules implements RulesDefinition{
 		    		.setSeverity(Severity.CRITICAL);
 		    tlelogic_lonelySet.setDebtSubCharacteristic("INTEGRATION_TESTABILITY")
 		    		.setDebtRemediationFunction(TLElogic.debtRemediationFunctions().constantPerIssue("10min"));
+		    // loop issues
+		    NewRule tlelogicNestedLoop = TleRepo.createRule("nestedLoop")
+		    		.setName("nested loop")
+		    		.setHtmlDescription("bad complexity")
+		    		.setSeverity(Severity.MAJOR);
+		    tlelogicNestedLoop.setDebtSubCharacteristic("INTEGRATION_TESTABILITY")
+		    .setDebtRemediationFunction(TLElogic.debtRemediationFunctions().constantPerIssue("10min"));
+		    NewRule tlelogicLoopWithSet = TleRepo.createRule("loopWithSet")
+		    		.setName("loop with set")
+		    		.setHtmlDescription("loop with set points to progamming with TLE")
+		    		.setSeverity(Severity.CRITICAL);
+		    tlelogicLoopWithSet.setDebtSubCharacteristic("INTEGRATION_TESTABILITY")
+		    .setDebtRemediationFunction(TLElogic.debtRemediationFunctions().constantPerIssue("10min"));
 		    TleRepo.done();
 		
 	}

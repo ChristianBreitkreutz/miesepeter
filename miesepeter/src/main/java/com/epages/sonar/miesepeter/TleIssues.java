@@ -17,6 +17,7 @@ import org.sonar.api.rule.RuleKey;
 import com.epages.sonar.miesepeter.parser.IssueLine;
 import com.epages.sonar.miesepeter.parser.ParseResult;
 import com.epages.sonar.miesepeter.parser.Parser;
+import com.epages.sonar.miesepeter.parser.issues.LoopIssues;
 
 public class TleIssues implements Sensor {
 
@@ -69,6 +70,23 @@ public class TleIssues implements Sensor {
 			triggerIssue(issuable, "lonelySet", result.lineNumber, "magic #SET without a 'LOCAL");
 		}
 
+		// loopIssues
+		ArrayList<IssueLine> loopIssues = parseResult.getLoopIssue();
+		for (IssueLine issueLine : loopIssues) {
+			switch (issueLine.type) {
+			case "NESTED_LOOP":
+				triggerIssue(issuable, "nestedLoop", issueLine.lineNumber, "nested loops, increase complexity");
+				break;
+			case "VARIABLE_IN_LOOP":
+				triggerIssue(issuable, "loopWithSet", issueLine.lineNumber, "#LOOP with #SET is programming. This don't belong in TLE");
+				break;
+
+			default:
+				System.out.println("ohje");
+				break;
+			}
+		}
+		
 		// measures
 		context.saveMeasure(inputFile, new Measure<String>( CoreMetrics.COMPLEXITY, (double) genericResults.size()));
 		context.saveMeasure(inputFile, new Measure<String>( CoreMetrics.NCLOC, (double) inputFile.lines()));

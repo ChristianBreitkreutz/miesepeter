@@ -7,15 +7,3 @@
         #SET("LonelySetValue","genau")
     #ENDLOCAL
 #ENDLOCAL#ENDLOCAL
-
-
-#LOCAL("Delimiter", 0)
-
-  #IF(#DisplayGross)
-
-    #IF(#Shop.PriceTagInfoMultiProductGross)
-
-      * #Shop.PriceTagInfoMultiProductGross[0]
-
-      #SET("Delimiter", 1)
-

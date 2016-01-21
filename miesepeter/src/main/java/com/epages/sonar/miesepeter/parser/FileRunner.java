@@ -9,15 +9,16 @@ import java.util.List;
 
 public class FileRunner {
 
-	public static List<String> loadFile (File file) {
+	public static List<CodeLine> loadFile (File file) {
 		BufferedReader reader;
-		List<String> fileRunner = new ArrayList<>();
+		List<CodeLine> codeLine = new ArrayList<>();
 		try {
 			reader = new BufferedReader(new FileReader(file));
 			String line;
-			fileRunner.add(file.getName());
+			int lineNumber = 1;
 			while ((line = reader.readLine()) != null) {
-				fileRunner.add(line);
+				codeLine.add(new CodeLine(lineNumber, line));
+				lineNumber++;
 			}
 			reader.close();
 		} catch (IOException e) {
@@ -25,6 +26,6 @@ public class FileRunner {
 			e.printStackTrace();
 			return null;
 		}
-		return fileRunner;
+		return codeLine;
 	}
 }
