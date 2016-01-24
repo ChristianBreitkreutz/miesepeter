@@ -47,18 +47,22 @@ public class TleIssues implements Sensor {
 		Parser TleParser = new Parser();
 		ParseResult parseResult = TleParser.parseFile(file);
 		ArrayList<IssueLine> genericResults = parseResult.getGenericTle();
+		int complexity = 0;
 
 		for (IssueLine result : genericResults) {
 			switch (result.type) {
-			case "LOCAL":
+			case "#LOCAL":
+				complexity += 2;
 				triggerIssue(issuable, "local", result.lineNumber, "don't use tle local");
 				break;
 
-			case "SET":
+			case "#SET":
+				complexity += 2;
 				triggerIssue(issuable, "local", result.lineNumber, "don't use tle set (and local)");
 				break;
 
 			default:
+				complexity += 1;
 				triggerIssue(issuable, "general", result.lineNumber, "default tle logic");
 				break;
 			}
@@ -67,6 +71,7 @@ public class TleIssues implements Sensor {
 		// lonelySet
 		ArrayList<IssueLine> lonelySetResults = parseResult.getLonelySet();
 		for (IssueLine result : lonelySetResults) {
+			complexity += 2;
 			triggerIssue(issuable, "lonelySet", result.lineNumber, "magic #SET without a 'LOCAL");
 		}
 
@@ -75,9 +80,11 @@ public class TleIssues implements Sensor {
 		for (IssueLine issueLine : loopIssues) {
 			switch (issueLine.type) {
 			case "NESTED_LOOP":
+				complexity += 3;
 				triggerIssue(issuable, "nestedLoop", issueLine.lineNumber, "nested loops, increase complexity");
 				break;
 			case "VARIABLE_IN_LOOP":
+				complexity += 3;
 				triggerIssue(issuable, "loopWithSet", issueLine.lineNumber, "#LOOP with #SET is programming. This don't belong in TLE");
 				break;
 
@@ -86,10 +93,16 @@ public class TleIssues implements Sensor {
 				break;
 			}
 		}
-		
+		// javascript Issues
+		ArrayList<IssueLine> javascriptIssues = parseResult.getJavascript();
+		for (IssueLine javascriptIssue : javascriptIssues) {
+			complexity += 1;
+			triggerIssue(issuable, "javascriptInTemplate", javascriptIssue.lineNumber, "javascript in template");
+		}
 		// measures
-		context.saveMeasure(inputFile, new Measure<String>( CoreMetrics.COMPLEXITY, (double) genericResults.size()));
-		context.saveMeasure(inputFile, new Measure<String>( CoreMetrics.NCLOC, (double) inputFile.lines()));
+		double linesOfCode = (double) (genericResults.size() + loopIssues.size() + javascriptIssues.size());
+		context.saveMeasure(inputFile, new Measure<String>( CoreMetrics.COMPLEXITY, (double) complexity));
+		context.saveMeasure(inputFile, new Measure<String>( CoreMetrics.NCLOC, (double) linesOfCode));
 				
 	}
 

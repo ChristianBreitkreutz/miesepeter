@@ -6,6 +6,8 @@ public class ParseResult {
 	private ArrayList<IssueLine> lonelySet;
 	private ArrayList<IssueLine> genericTle;
 	private ArrayList<IssueLine> loopIssues;
+	private ArrayList<IssueLine> javascript;
+	
 
 	public ArrayList<IssueLine> getLonelySet() {
 		return lonelySet;
@@ -29,6 +31,14 @@ public class ParseResult {
 
 	public void setLoopIssues(ArrayList<IssueLine> loopIssue) {
 		this.loopIssues = loopIssue;
+	}
+
+	public ArrayList<IssueLine> getJavascript() {
+		return javascript;
+	}
+
+	public void setJavascript(ArrayList<IssueLine> javascript) {
+		this.javascript = javascript;
 	}
 	
 }

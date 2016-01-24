@@ -35,12 +35,20 @@ public class Rules implements RulesDefinition{
 		    		.setSeverity(Severity.MAJOR);
 		    tlelogicNestedLoop.setDebtSubCharacteristic("INTEGRATION_TESTABILITY")
 		    .setDebtRemediationFunction(TLElogic.debtRemediationFunctions().constantPerIssue("10min"));
+		    
 		    NewRule tlelogicLoopWithSet = TleRepo.createRule("loopWithSet")
 		    		.setName("loop with set")
 		    		.setHtmlDescription("loop with set points to progamming with TLE")
 		    		.setSeverity(Severity.CRITICAL);
 		    tlelogicLoopWithSet.setDebtSubCharacteristic("INTEGRATION_TESTABILITY")
 		    .setDebtRemediationFunction(TLElogic.debtRemediationFunctions().constantPerIssue("10min"));
+		    // javascriptIssue Issue
+		    NewRule javascriptInTemplate = TleRepo.createRule("javascriptInTemplate")
+		    		.setName("javascript in template")
+		    		.setHtmlDescription("javascript")
+		    		.setSeverity(Severity.MAJOR);
+		    javascriptInTemplate.setDebtSubCharacteristic("INTEGRATION_TESTABILITY")
+		    .setDebtRemediationFunction(TLElogic.debtRemediationFunctions().constantPerIssue("30min"));
 		    TleRepo.done();
 		
 	}

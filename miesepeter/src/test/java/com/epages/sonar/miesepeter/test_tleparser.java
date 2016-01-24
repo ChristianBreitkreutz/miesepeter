@@ -20,13 +20,13 @@ public class test_tleparser {
 		ParseResult result = parser.parseFile(file);
 		ArrayList<IssueLine> lineIssues = result.getGenericTle();
 		lineIssues.get(0);
-		assertEquals("IF", lineIssues.get(0).type);
+		assertEquals("#IF", lineIssues.get(0).type);
 		assertEquals(1, lineIssues.get(0).lineNumber);
 
-		assertEquals("LOCAL", lineIssues.get(1).type);
+		assertEquals("#LOCAL", lineIssues.get(1).type);
 		assertEquals(5, lineIssues.get(1).lineNumber); // local in line 5
 
-		assertEquals("IF", lineIssues.get(2).type);
+		assertEquals("#IF", lineIssues.get(2).type);
 		assertEquals(6, lineIssues.get(2).lineNumber); // if in line 6
 	}
 
