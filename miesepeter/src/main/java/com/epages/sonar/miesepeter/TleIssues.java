@@ -53,12 +53,67 @@ public class TleIssues implements Sensor {
 			switch (result.type) {
 			case "#LOCAL":
 				complexity += 2;
-				triggerIssue(issuable, "local", result.lineNumber, "don't use tle local");
+				triggerIssue(issuable, "local", result.lineNumber, "try not to use a variable in the template (solve this in UI controller)");
 				break;
 
 			case "#SET":
 				complexity += 2;
-				triggerIssue(issuable, "local", result.lineNumber, "don't use tle set (and local)");
+				triggerIssue(issuable, "local", result.lineNumber, "try not to use a variable in the template (solve this in UI controller)");
+				break;
+
+			case "#IF":
+				complexity += 1;
+				triggerIssue(issuable, "IF", result.lineNumber, "TLE #IF");
+				break;
+				
+			case "#ELSE":
+				complexity += 1;
+				triggerIssue(issuable, "ELSE", result.lineNumber, "TLE #ELSE");
+				break;
+				
+			case "#ELSIF":
+				complexity += 1;
+				triggerIssue(issuable, "ELSIF", result.lineNumber, "TLE #ELSIF");
+				break;
+			case "#REM":
+				complexity += 1;
+				triggerIssue(issuable, "REM", result.lineNumber, "Comment in TLE");
+				break;
+			case "#BLOCK":
+				complexity += 1;
+				triggerIssue(issuable, "BLOCK", result.lineNumber, "TLE Block");
+				break;
+			case "#WITH":
+				complexity += 1;
+				triggerIssue(issuable, "WITH", result.lineNumber, "TLE #With scope change");
+				break;
+			case "#WITH_ERROR":
+				complexity += 1;
+				triggerIssue(issuable, "WITH_ERROR", result.lineNumber, "TLE error context");
+				break;
+			case "#FUNCTION":
+				complexity += 1;
+				triggerIssue(issuable, "FUNCTION", result.lineNumber, "TLE Function call (try to solve this in UI controller)");
+				break;
+			case "#MENU":
+				complexity += 1;
+				triggerIssue(issuable, "MENU", result.lineNumber, "TLE Menu");
+				break;
+			case "#CALCULATE":
+				complexity += 1;
+				triggerIssue(issuable, "CALCULATE", result.lineNumber, "Calculation in TLE (try to solve this in UI controller)");
+				break;
+			case "#PROGRESS":
+				complexity += 1;
+				triggerIssue(issuable, "PROGRESS", result.lineNumber, "TLE #PROGRESS");
+				break;
+			case "OR":
+				complexity += 1;
+				triggerIssue(issuable, "LogicElement", result.lineNumber, "(OR) TLE logic increase complexity");
+				break;
+			case "AND":
+				complexity += 1;
+				triggerIssue(issuable, "LogicElement", result.lineNumber, "(AND) TLE logic increase complexity");
 				break;
 
 			default:

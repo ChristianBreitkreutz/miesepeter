@@ -4,5 +4,6 @@
     #ENDLOOP
 #ENDLOOP
 #LOOP(#Array)
+     #IF(NOT(#IsEbayComplete) AND NOT(#IsPurchased))#SET("ShowEbayIncomplete", 1) #ENDIF
     <td>#Value</td>
 #ENDLOOP
