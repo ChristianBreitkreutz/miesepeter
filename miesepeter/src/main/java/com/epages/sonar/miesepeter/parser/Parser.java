@@ -1,7 +1,6 @@
 package com.epages.sonar.miesepeter.parser;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.epages.sonar.miesepeter.parser.issues.GenericTle;

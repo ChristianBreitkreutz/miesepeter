@@ -1,7 +1,8 @@
 package com.epages.sonar.miesepeter;
 
+import static org.sonar.api.server.rule.RulesDefinition.SubCharacteristics.INTEGRATION_TESTABILITY;
+
 import org.sonar.api.rule.Severity;
-import org.sonar.api.rule.RuleStatus;
 import org.sonar.api.server.rule.RulesDefinition;
 
 
@@ -27,34 +28,34 @@ public class Rules implements RulesDefinition{
 		    		.setName("TLE locale and set")
 		    		.setHtmlDescription("use of #LOCAL and #SET points to programming logic in template, belongs in controller")
 		    		.setSeverity(Severity.MAJOR);
-		    tLElogic_LOCAL.setDebtSubCharacteristic("INTEGRATION_TESTABILITY")
+		    tLElogic_LOCAL.setDebtSubCharacteristic(INTEGRATION_TESTABILITY)
 		    		.setDebtRemediationFunction(tLElogic_LOCAL.debtRemediationFunctions().constantPerIssue("10min"));
 		    NewRule tlelogic_lonelySet = TleRepo.createRule("lonelySet")
 		    		.setName("set without local (loose of context)")
 		    		.setHtmlDescription("#SET without #LOCAL (high risk of site effects)")
 		    		.setSeverity(Severity.CRITICAL);
-		    tlelogic_lonelySet.setDebtSubCharacteristic("INTEGRATION_TESTABILITY")
+		    tlelogic_lonelySet.setDebtSubCharacteristic(INTEGRATION_TESTABILITY)
 		    		.setDebtRemediationFunction(tlelogic_lonelySet.debtRemediationFunctions().constantPerIssue("10min"));
 		    // loop issues
 		    NewRule tlelogicNestedLoop = TleRepo.createRule("nestedLoop")
 		    		.setName("nested loop")
 		    		.setHtmlDescription("bad complexity")
 		    		.setSeverity(Severity.MAJOR);
-		    tlelogicNestedLoop.setDebtSubCharacteristic("INTEGRATION_TESTABILITY")
+		    tlelogicNestedLoop.setDebtSubCharacteristic(INTEGRATION_TESTABILITY)
 		    .setDebtRemediationFunction(tlelogicNestedLoop.debtRemediationFunctions().constantPerIssue("10min"));
 		    
 		    NewRule tlelogicLoopWithSet = TleRepo.createRule("loopWithSet")
 		    		.setName("loop with set")
 		    		.setHtmlDescription("loop with set points to progamming with TLE")
 		    		.setSeverity(Severity.CRITICAL);
-		    tlelogicLoopWithSet.setDebtSubCharacteristic("INTEGRATION_TESTABILITY")
+		    tlelogicLoopWithSet.setDebtSubCharacteristic(INTEGRATION_TESTABILITY)
 		    .setDebtRemediationFunction(tlelogicLoopWithSet.debtRemediationFunctions().constantPerIssue("10min"));
 		    // javascriptIssue Issue
 		    NewRule javascriptInTemplate = TleRepo.createRule("javascriptInTemplate")
 		    		.setName("javascript in template")
 		    		.setHtmlDescription("javascript")
 		    		.setSeverity(Severity.MAJOR);
-		    javascriptInTemplate.setDebtSubCharacteristic("INTEGRATION_TESTABILITY")
+		    javascriptInTemplate.setDebtSubCharacteristic(INTEGRATION_TESTABILITY)
 		    .setDebtRemediationFunction(javascriptInTemplate.debtRemediationFunctions().constantPerIssue("59min"));
 		    TleRepo.done();
 		
@@ -65,7 +66,7 @@ public class Rules implements RulesDefinition{
 				.setName("TLE: "+name)
 				.setHtmlDescription("TLE: "+name)
 				.setSeverity(Severity.INFO);
-		TLElogic.setDebtSubCharacteristic("INTEGRATION_TESTABILITY")
+		TLElogic.setDebtSubCharacteristic(INTEGRATION_TESTABILITY)
 		        .setDebtRemediationFunction(TLElogic.debtRemediationFunctions().constantPerIssue(timeInMinutes+"min"));
 	}
 
