@@ -1,5 +1,5 @@
 
-package com.epages.sonar.miesepeter;
+package com.epages.sonar.miesepeter.parser;
 
 import static org.junit.Assert.assertEquals;
 
