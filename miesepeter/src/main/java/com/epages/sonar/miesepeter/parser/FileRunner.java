@@ -10,10 +10,9 @@ import java.util.List;
 public class FileRunner {
 
 	public static List<CodeLine> loadFile (File file) {
-		BufferedReader reader;
+		;
 		List<CodeLine> codeLine = new ArrayList<>();
-		try {
-			reader = new BufferedReader(new FileReader(file));
+		try(BufferedReader reader = new BufferedReader(new FileReader(file))) {
 			String line;
 			int lineNumber = 1;
 			while ((line = reader.readLine()) != null) {

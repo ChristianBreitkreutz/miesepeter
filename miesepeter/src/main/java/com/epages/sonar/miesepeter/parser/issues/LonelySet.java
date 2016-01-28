@@ -12,7 +12,7 @@ import com.epages.sonar.miesepeter.parser.TleParser;
 
 public class LonelySet implements TleParser {
 	@Override
-	public ArrayList<IssueLine> parse(List<CodeLine> linedFile){
+	public List<IssueLine> parse(List<CodeLine> linedFile){
 		
 		int positionInLoop = 0;
 		ArrayList<IssueLine> lineIssues = new ArrayList<>();
@@ -28,10 +28,10 @@ public class LonelySet implements TleParser {
 						+ ".*"
 				);
 				for (CodeLine line : linedFile) {
-				Matcher matcher = patternSET.matcher(line.text);
+				Matcher matcher = patternSET.matcher(line.getText());
 				if (matcher.find()) {
 					if (!hasDefinitionInSameFile(positionInLoop,matcher.group(1),linedFile)) {
-						lineIssues.add(new IssueLine(line.lineNumber,"LonelySet"));
+						lineIssues.add(new IssueLine(line.getLineNumber(),"LonelySet"));
 					}
 				}
 			positionInLoop++;
@@ -51,7 +51,7 @@ public class LonelySet implements TleParser {
 		);
 		Matcher matcher;
 		for (int i = currentPosition; i>=0; i--) {
-				matcher = patternLOCALE.matcher(linedFile.get(i).text);
+				matcher = patternLOCALE.matcher(linedFile.get(i).getText());
 				if (matcher.matches()) {
 					hasDefinition = true;
 					break;

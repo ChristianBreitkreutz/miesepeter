@@ -20,8 +20,8 @@ public class BlockFinder {
 		int openBlocks = 0;
 
 		for (CodeLine codeLine : completeFile) {
-			List<Integer> startElements = findElementsInLine(codeLine.text, "#" + blocktype);
-			List<Integer> endElements = findElementsInLine(codeLine.text, "#END" + blocktype);
+			List<Integer> startElements = findElementsInLine(codeLine.getText(), "#" + blocktype);
+			List<Integer> endElements = findElementsInLine(codeLine.getText(), "#END" + blocktype);
 			openBlocks += (startElements.size() - endElements.size());
 
 			if (startElements.size() > 0 || endElements.size() > 0 || openBlocks > 0) {
@@ -78,8 +78,8 @@ public class BlockFinder {
 	}
 
 	private List<CodeLine> createInlineCodeBlock(CodeLine codeLine, int oldSplitPosition, int splitPosition) {
-		String splitLine = codeLine.text;
-		CodeLine newLine = new CodeLine(codeLine.lineNumber, splitLine.substring(oldSplitPosition, splitPosition));
+		String splitLine = codeLine.getText();
+		CodeLine newLine = new CodeLine(codeLine.getLineNumber(), splitLine.substring(oldSplitPosition, splitPosition));
 		List<CodeLine> OneLine = new ArrayList<>();
 		OneLine.add(newLine);
 		return OneLine;
@@ -97,15 +97,15 @@ public class BlockFinder {
 	}
 
 	private List<CodeLine> cleanUpInlineCodeBlock(List<CodeLine> codeBlock, String blocktype) {
-		String firstLine = codeBlock.get(0).text;
-		int firstLineNumber = codeBlock.get(0).lineNumber;
+		String firstLine = codeBlock.get(0).getText();
+		int firstLineNumber = codeBlock.get(0).getLineNumber();
 		int positionBeforeFirstElement = firstLine.indexOf("#" + blocktype);
 		String trimmedFirstLine = firstLine.substring(positionBeforeFirstElement);
 		codeBlock.set(0, new CodeLine(firstLineNumber, trimmedFirstLine));
 
 		int lastIndex = codeBlock.size() - 1;
-		String lastLine = codeBlock.get(lastIndex).text;
-		int lastLineNumber = codeBlock.get(lastIndex).lineNumber;
+		String lastLine = codeBlock.get(lastIndex).getText();
+		int lastLineNumber = codeBlock.get(lastIndex).getLineNumber();
 		String endElement = "#END" + blocktype;
 		int positionAfterLastElement = lastLine.lastIndexOf(endElement) + endElement.length();
 		String trimmedLastLine = lastLine.substring(0, positionAfterLastElement);

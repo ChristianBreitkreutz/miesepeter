@@ -10,13 +10,13 @@ import com.epages.sonar.miesepeter.parser.TleParser;
 public class GenericTle implements TleParser{
 
 	@Override
-	public ArrayList<IssueLine> parse(List<CodeLine> linedFile) {
+	public List<IssueLine> parse(List<CodeLine> linedFile) {
 		String[] tleList = {"#IF", "#ELSIF", "#ELSE", "#LOCAL", "#SET", "#BLOCK", "#WITH", "#WITH_ERROR", "#FUNCTION", "#MENU", "#CALCULATE", "#PROGRESS", "#REM", "OR", "AND"};
 		ArrayList<IssueLine> lineIssues = new ArrayList<>();
 		for (CodeLine line : linedFile) {
 			for (String tle : tleList) {
-				if (line.text.matches(".*"+tle+".*")) {
-					lineIssues.add(new IssueLine(line.lineNumber,tle));
+				if (line.getText().matches(".*"+tle+".*")) {
+					lineIssues.add(new IssueLine(line.getLineNumber(),tle));
 				}
 			}
 		}
