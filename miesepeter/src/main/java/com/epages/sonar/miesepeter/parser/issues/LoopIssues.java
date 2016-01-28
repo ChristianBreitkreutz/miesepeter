@@ -19,14 +19,14 @@ public class LoopIssues implements TleParser{
 		for (CodeBlock codeBlock : loopBlocks) {
 			List<CodeLine> lines = codeBlock.getBlock();
 			for (CodeLine codeLine : lines) {
-				if(codeLine.text.matches(".*#SET.*")) { //TODO: find also multiple sets
-					lineIssues.add(new IssueLine(codeLine.lineNumber, "VARIABLE_IN_LOOP"));
+				if(codeLine.getText().matches(".*#SET.*")) { //TODO: find also multiple sets
+					lineIssues.add(new IssueLine(codeLine.getLineNumber(), "VARIABLE_IN_LOOP"));
 				}
-				if(codeLine.text.matches(".*#LOCAL.*")) {
-					lineIssues.add(new IssueLine(codeLine.lineNumber, "VARIABLE_IN_LOOP"));
+				if(codeLine.getText().matches(".*#LOCAL.*")) {
+					lineIssues.add(new IssueLine(codeLine.getLineNumber(), "VARIABLE_IN_LOOP"));
 				}
-				if(codeLine.text.matches(".*#LOOP.*")) {
-					lineIssues.add(new IssueLine(codeLine.lineNumber, "NESTED_LOOP"));
+				if(codeLine.getText().matches(".*#LOOP.*")) {
+					lineIssues.add(new IssueLine(codeLine.getLineNumber(), "NESTED_LOOP"));
 				}
 			}
 		}

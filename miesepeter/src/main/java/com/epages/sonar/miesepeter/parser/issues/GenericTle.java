@@ -15,8 +15,8 @@ public class GenericTle implements TleParser{
 		ArrayList<IssueLine> lineIssues = new ArrayList<>();
 		for (CodeLine line : linedFile) {
 			for (String tle : tleList) {
-				if (line.text.matches(".*"+tle+".*")) {
-					lineIssues.add(new IssueLine(line.lineNumber,tle));
+				if (line.getText().matches(".*"+tle+".*")) {
+					lineIssues.add(new IssueLine(line.getLineNumber(),tle));
 				}
 			}
 		}
