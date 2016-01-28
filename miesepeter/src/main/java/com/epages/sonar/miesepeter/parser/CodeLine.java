@@ -1,5 +1,7 @@
 package com.epages.sonar.miesepeter.parser;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public class CodeLine {
 
 	private final int lineNumber;
@@ -7,8 +9,8 @@ public class CodeLine {
 	private final String text;
 
 	public CodeLine(Integer lineNumber, String text) {
-		this.lineNumber = lineNumber;
-		this.text = text;
+		this.lineNumber = checkNotNull(lineNumber);
+		this.text = checkNotNull(text);
 	}
 
 	public int getLineNumber() {
