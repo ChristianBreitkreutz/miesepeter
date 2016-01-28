@@ -1,44 +1,48 @@
 package com.epages.sonar.miesepeter.parser;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ParseResult {
-	private ArrayList<IssueLine> lonelySet;
-	private ArrayList<IssueLine> genericTle;
-	private ArrayList<IssueLine> loopIssues;
-	private ArrayList<IssueLine> javascript;
-	
+	private List<IssueLine> lonelySet = new ArrayList<>();
+	private List<IssueLine> genericTle = new ArrayList<>();
+	private List<IssueLine> loopIssues = new ArrayList<>();
+	private List<IssueLine> javascript = new ArrayList<>();
 
-	public ArrayList<IssueLine> getLonelySet() {
+	public List<IssueLine> getLonelySet() {
 		return lonelySet;
 	}
 
-	public void setLonelySet(ArrayList<IssueLine> lonelySet) {
-		this.lonelySet = lonelySet;
+	public void setLonelySet(List<IssueLine> lonelySet) {
+		this.lonelySet.clear();
+		this.lonelySet.addAll(lonelySet);
 	}
 
-	public ArrayList<IssueLine> getGenericTle() {
+	public List<IssueLine> getGenericTle() {
 		return genericTle;
 	}
 
-	public void setGenericTle(ArrayList<IssueLine> genericTle) {
-		this.genericTle = genericTle;
+	public void setGenericTle(List<IssueLine> genericTle) {
+		this.genericTle.clear();
+		this.genericTle.addAll(genericTle);
 	}
 
-	public ArrayList<IssueLine> getLoopIssue() {
+	public List<IssueLine> getLoopIssue() {
 		return loopIssues;
 	}
 
-	public void setLoopIssues(ArrayList<IssueLine> loopIssue) {
-		this.loopIssues = loopIssue;
+	public void setLoopIssues(List<IssueLine> loopIssue) {
+		this.loopIssues.clear();
+		this.loopIssues.addAll(loopIssue);
 	}
 
-	public ArrayList<IssueLine> getJavascript() {
+	public List<IssueLine> getJavascript() {
 		return javascript;
 	}
 
-	public void setJavascript(ArrayList<IssueLine> javascript) {
-		this.javascript = javascript;
+	public void setJavascript(List<IssueLine> javascript) {
+		this.javascript.clear();
+		this.javascript.addAll(javascript);
 	}
 	
 }

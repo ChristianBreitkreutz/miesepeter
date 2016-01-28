@@ -1,7 +1,7 @@
 package com.epages.sonar.miesepeter;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.List;
 
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
@@ -17,7 +17,6 @@ import org.sonar.api.rule.RuleKey;
 import com.epages.sonar.miesepeter.parser.IssueLine;
 import com.epages.sonar.miesepeter.parser.ParseResult;
 import com.epages.sonar.miesepeter.parser.Parser;
-import com.epages.sonar.miesepeter.parser.issues.LoopIssues;
 
 public class TleIssues implements Sensor {
 
@@ -46,7 +45,7 @@ public class TleIssues implements Sensor {
 		Issuable issuable = perspectives.as(Issuable.class, inputFile);
 		Parser TleParser = new Parser();
 		ParseResult parseResult = TleParser.parseFile(file);
-		ArrayList<IssueLine> genericResults = parseResult.getGenericTle();
+		List<IssueLine> genericResults = parseResult.getGenericTle();
 		int complexity = 0;
 
 		for (IssueLine result : genericResults) {
@@ -124,14 +123,14 @@ public class TleIssues implements Sensor {
 		}
 
 		// lonelySet
-		ArrayList<IssueLine> lonelySetResults = parseResult.getLonelySet();
+		List<IssueLine> lonelySetResults = parseResult.getLonelySet();
 		for (IssueLine result : lonelySetResults) {
 			complexity += 2;
 			triggerIssue(issuable, "lonelySet", result.lineNumber, "magic #SET without a 'LOCAL");
 		}
 
 		// loopIssues
-		ArrayList<IssueLine> loopIssues = parseResult.getLoopIssue();
+		List<IssueLine> loopIssues = parseResult.getLoopIssue();
 		for (IssueLine issueLine : loopIssues) {
 			switch (issueLine.type) {
 			case "NESTED_LOOP":
@@ -149,7 +148,7 @@ public class TleIssues implements Sensor {
 			}
 		}
 		// javascript Issues
-		ArrayList<IssueLine> javascriptIssues = parseResult.getJavascript();
+		List<IssueLine> javascriptIssues = parseResult.getJavascript();
 		for (IssueLine javascriptIssue : javascriptIssues) {
 			complexity += 1;
 			triggerIssue(issuable, "javascriptInTemplate", javascriptIssue.lineNumber, "javascript in template");

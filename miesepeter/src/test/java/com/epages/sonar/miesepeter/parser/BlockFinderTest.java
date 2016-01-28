@@ -1,5 +1,5 @@
 
-package com.epages.sonar.miesepeter;
+package com.epages.sonar.miesepeter.parser;
 
 import static org.junit.Assert.assertEquals;
 
@@ -12,7 +12,7 @@ import com.epages.sonar.miesepeter.parser.BlockFinder;
 import com.epages.sonar.miesepeter.parser.CodeBlock;
 import com.epages.sonar.miesepeter.parser.CodeLine;
 
-public class TestBlockFinder {
+public class BlockFinderTest {
 
 	@Test
 	public void testoneBlockLine() {

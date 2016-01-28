@@ -9,14 +9,11 @@ import org.sonar.api.measures.Measure;
 import org.sonar.api.resources.Project;
 
 
-
 public class GlobalMeasure implements Sensor {
 
-	private Settings settings;
 	private FileSystem fs;
 
 	public GlobalMeasure(Settings settings, FileSystem fs) {
-		this.settings = settings;
 		this.fs = fs;
 	}
 

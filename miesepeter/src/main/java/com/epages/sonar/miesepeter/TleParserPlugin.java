@@ -16,7 +16,7 @@ public class TleParserPlugin extends SonarPlugin{
 		extensions.add(GlobalMeasure.class);
 
 		extensions.add(Rules.class);
-		extensions.add(miese_profile.class);
+		extensions.add(MiesesProfile.class);
 		extensions.add(TleIssues.class);
 		return extensions;
 	}

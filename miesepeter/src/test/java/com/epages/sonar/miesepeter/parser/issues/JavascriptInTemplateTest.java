@@ -1,4 +1,4 @@
-package com.epages.sonar.miesepeter;
+package com.epages.sonar.miesepeter.parser.issues;
 
 import static org.junit.Assert.assertEquals;
 
@@ -13,7 +13,7 @@ import com.epages.sonar.miesepeter.parser.FileRunner;
 import com.epages.sonar.miesepeter.parser.IssueLine;
 import com.epages.sonar.miesepeter.parser.issues.JavaScriptInTemplate;
 
-public class JavascriptInTemplate {
+public class JavascriptInTemplateTest {
 
 	@Test
 	public void loadFile() {
