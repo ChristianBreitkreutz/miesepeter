@@ -12,7 +12,7 @@ import com.epages.sonar.miesepeter.parser.TleParser;
 public class LoopIssues implements TleParser{
 
 	@Override
-	public ArrayList<IssueLine> parse(List<CodeLine> completeFile) {
+	public List<IssueLine> parse(List<CodeLine> completeFile) {
 		ArrayList<IssueLine> lineIssues = new ArrayList<>();
 		BlockFinder blockfinder = new BlockFinder(completeFile);
 		List<CodeBlock> loopBlocks = blockfinder.getCodeBlocks("LOOP");

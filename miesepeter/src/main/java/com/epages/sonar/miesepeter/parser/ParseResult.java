@@ -1,5 +1,7 @@
 package com.epages.sonar.miesepeter.parser;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class ParseResult {
 	}
 
 	public void setGenericTle(List<IssueLine> genericTle) {
+		checkNotNull(genericTle);
 		this.genericTle.clear();
 		this.genericTle.addAll(genericTle);
 	}
@@ -32,6 +35,7 @@ public class ParseResult {
 	}
 
 	public void setLoopIssues(List<IssueLine> loopIssue) {
+		checkNotNull(loopIssue);
 		this.loopIssues.clear();
 		this.loopIssues.addAll(loopIssue);
 	}
@@ -41,6 +45,7 @@ public class ParseResult {
 	}
 
 	public void setJavascript(List<IssueLine> javascript) {
+		checkNotNull(javascript);
 		this.javascript.clear();
 		this.javascript.addAll(javascript);
 	}

@@ -12,7 +12,7 @@ import com.epages.sonar.miesepeter.parser.TleParser;
 
 public class LonelySet implements TleParser {
 	@Override
-	public ArrayList<IssueLine> parse(List<CodeLine> linedFile){
+	public List<IssueLine> parse(List<CodeLine> linedFile){
 		
 		int positionInLoop = 0;
 		ArrayList<IssueLine> lineIssues = new ArrayList<>();
