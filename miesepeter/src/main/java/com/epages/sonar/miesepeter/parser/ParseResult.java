@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ParseResult {
-	private List<IssueLine> lonelySet = new ArrayList<>();
-	private List<IssueLine> genericTle = new ArrayList<>();
-	private List<IssueLine> loopIssues = new ArrayList<>();
-	private List<IssueLine> javascript = new ArrayList<>();
+	private final List<IssueLine> lonelySet = new ArrayList<>();
+	private final List<IssueLine> genericTle = new ArrayList<>();
+	private final List<IssueLine> loopIssues = new ArrayList<>();
+	private final List<IssueLine> javascript = new ArrayList<>();
 
 	public List<IssueLine> getLonelySet() {
 		return lonelySet;

@@ -1,6 +1,7 @@
 package com.epages.sonar.miesepeter.parser;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.util.List;
@@ -11,7 +12,7 @@ import com.epages.sonar.miesepeter.parser.IssueLine;
 import com.epages.sonar.miesepeter.parser.ParseResult;
 import com.epages.sonar.miesepeter.parser.Parser;
 
-public class TleparserTest {
+public class ParserTest {
 
 	@Test
 	public void loadFile() {
@@ -28,6 +29,15 @@ public class TleparserTest {
 
 		assertEquals("#IF", lineIssues.get(2).type);
 		assertEquals(6, lineIssues.get(2).lineNumber); // if in line 6
+	}
+
+	@Test
+	public void testNonExistantFile() {
+		File file = new File("non_existant_file.html");
+		Parser parser = new Parser();
+		ParseResult result = parser.parseFile(file);
+		List<IssueLine> lineIssues = result.getGenericTle();
+		assertNotNull(lineIssues);
 	}
 
 }

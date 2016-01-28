@@ -14,7 +14,7 @@ import com.epages.sonar.miesepeter.parser.IssueLine;
 public class JavascriptInTemplateTest {
 
 	@Test
-	public void loadFile() {
+	public void loadFile() throws Exception {
 		File file = new File("src/test/resources/JavascriptInTemplate.html");
 		List<CodeLine> linedFile = FileRunner.loadFile(file);
 		List<IssueLine> lineIssues = new JavaScriptInTemplate().parse(linedFile);
