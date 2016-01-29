@@ -9,7 +9,7 @@ public class TleParserPlugin extends SonarPlugin{
 
 	@Override
 	public List<Object> getExtensions() {
-		List<Object> extensions = new ArrayList<Object>();
+		List<Object> extensions = new ArrayList<>();
 		extensions.add(Properties.definitions());
 		extensions.add(ParsingLanguage.class);
 		extensions.add(TleMetrics.class);
