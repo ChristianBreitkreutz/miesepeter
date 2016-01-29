@@ -106,10 +106,6 @@ public class TleIssues implements Sensor {
 				complexity += 1;
 				triggerIssue(issuable, "CALCULATE", result.getLineNumber(), "Calculation in TLE (try to solve this in UI controller)");
 				break;
-			case "#PROGRESS":
-				complexity += 1;
-				triggerIssue(issuable, "PROGRESS", result.getLineNumber(), "TLE #PROGRESS");
-				break;
 			case "OR":
 				complexity += 1;
 				triggerIssue(issuable, "LogicElement", result.getLineNumber(), "(OR) TLE logic increase complexity");

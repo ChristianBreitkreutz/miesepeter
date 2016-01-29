@@ -21,7 +21,6 @@ public class Rules implements RulesDefinition{
 		    setRule(tleRepo, "FUNCTION", "10");
 		    setRule(tleRepo, "MENU", "10");
 		    setRule(tleRepo, "CALCULATE", "10");
-		    setRule(tleRepo, "PROGRESS", "10");
 		    setRule(tleRepo, "LogicElement", "10");
 		    setRule(tleRepo, "general", "10");
 		    NewRule tleLogicLocal = tleRepo.createRule("local")
