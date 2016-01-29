@@ -21,14 +21,14 @@ public class ParserTest {
 		ParseResult result = parser.parseFile(file);
 		List<IssueLine> lineIssues = result.getGenericTle();
 		lineIssues.get(0);
-		assertEquals("#IF", lineIssues.get(0).type);
-		assertEquals(1, lineIssues.get(0).lineNumber);
+		assertEquals("#IF", lineIssues.get(0).getType());
+		assertEquals(1, lineIssues.get(0).getLineNumber());
 
-		assertEquals("#LOCAL", lineIssues.get(1).type);
-		assertEquals(5, lineIssues.get(1).lineNumber); // local in line 5
+		assertEquals("#LOCAL", lineIssues.get(1).getType());
+		assertEquals(5, lineIssues.get(1).getLineNumber()); // local in line 5
 
-		assertEquals("#IF", lineIssues.get(2).type);
-		assertEquals(6, lineIssues.get(2).lineNumber); // if in line 6
+		assertEquals("#IF", lineIssues.get(2).getType());
+		assertEquals(6, lineIssues.get(2).getLineNumber()); // if in line 6
 	}
 
 	@Test

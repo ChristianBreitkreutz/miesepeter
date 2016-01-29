@@ -24,12 +24,12 @@ public class Rules implements RulesDefinition{
 		    setRule(TleRepo, "PROGRESS", "10");
 		    setRule(TleRepo, "LogicElement", "10");
 		    setRule(TleRepo, "general", "10");
-		    NewRule tLElogic_LOCAL = TleRepo.createRule("local")
+		    NewRule tleLogicLocal = TleRepo.createRule("local")
 		    		.setName("TLE locale and set")
 		    		.setHtmlDescription("use of #LOCAL and #SET points to programming logic in template, belongs in controller")
 		    		.setSeverity(Severity.MAJOR);
-		    tLElogic_LOCAL.setDebtSubCharacteristic(INTEGRATION_TESTABILITY)
-		    		.setDebtRemediationFunction(tLElogic_LOCAL.debtRemediationFunctions().constantPerIssue("10min"));
+		    tleLogicLocal.setDebtSubCharacteristic(INTEGRATION_TESTABILITY)
+		    		.setDebtRemediationFunction(tleLogicLocal.debtRemediationFunctions().constantPerIssue("10min"));
 		    NewRule tlelogic_lonelySet = TleRepo.createRule("lonelySet")
 		    		.setName("set without local (loose of context)")
 		    		.setHtmlDescription("#SET without #LOCAL (high risk of site effects)")
@@ -61,13 +61,13 @@ public class Rules implements RulesDefinition{
 		
 	}
 
-	private void setRule(NewRepository TleRepo, String name, String timeInMinutes) {
-		NewRule TLElogic = TleRepo.createRule(name)
+	private void setRule(NewRepository tleRepo, String name, String timeInMinutes) {
+		NewRule tleLogic = tleRepo.createRule(name)
 				.setName("TLE: "+name)
 				.setHtmlDescription("TLE: "+name)
 				.setSeverity(Severity.INFO);
-		TLElogic.setDebtSubCharacteristic(INTEGRATION_TESTABILITY)
-		        .setDebtRemediationFunction(TLElogic.debtRemediationFunctions().constantPerIssue(timeInMinutes+"min"));
+		tleLogic.setDebtSubCharacteristic(INTEGRATION_TESTABILITY)
+		        .setDebtRemediationFunction(tleLogic.debtRemediationFunctions().constantPerIssue(timeInMinutes+"min"));
 	}
 
 }
