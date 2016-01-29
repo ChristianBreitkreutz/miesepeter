@@ -26,3 +26,7 @@ jar {
             )
     }
 }
+
+wrapper {
+	gradleVersion = '2.10'
+}
