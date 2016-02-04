@@ -15,8 +15,7 @@ public class ParsingLanguage extends AbstractLanguage{
 
 	@Override
 	public String[] getFileSuffixes() {
-		String[] suffixes = {"html"};
-		return suffixes;
+		return new String[]{"html"};
 	}
 
 }

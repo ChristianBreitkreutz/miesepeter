@@ -69,12 +69,9 @@ local.properties
  
 # PDT-specific
 .buildpath
-*gradlew
-*gradlew.bat
 *cache.properties
 *cache.properties.lock
 *fileHashes.bin
 *fileSnapshots.bin
 *outputFileStates.bin
 *taskArtifacts.bin
-*gradle-wrapper.properties

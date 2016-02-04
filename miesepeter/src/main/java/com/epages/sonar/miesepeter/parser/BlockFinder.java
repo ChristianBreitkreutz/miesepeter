@@ -24,7 +24,7 @@ public class BlockFinder {
 			List<Integer> endElements = findElementsInLine(codeLine.getText(), "#END" + blocktype);
 			openBlocks += (startElements.size() - endElements.size());
 
-			if (startElements.size() > 0 || endElements.size() > 0 || openBlocks > 0) {
+			if (!startElements.isEmpty() || !endElements.isEmpty() || openBlocks > 0) {
 				blockComplexity += startElements.size();
 				subCodeBlock.add(codeLine); // add next line
 				if (openBlocks == 0) {

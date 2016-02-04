@@ -10,64 +10,63 @@ public class Rules implements RulesDefinition{
 
 	@Override
 	public void define(Context context) {
-		    NewRepository TleRepo = context.createRepository("EpagesTemplateLanguage", "tle").setName("TLE logic");
-		    setRule(TleRepo, "IF", "10");
-		    setRule(TleRepo, "ELSIF", "10");
-		    setRule(TleRepo, "ELSE", "10");
-		    setRule(TleRepo, "REM", "10");
-		    setRule(TleRepo, "BLOCK", "10");
-		    setRule(TleRepo, "WITH", "10");
-		    setRule(TleRepo, "WITH_ERROR", "10");
-		    setRule(TleRepo, "FUNCTION", "10");
-		    setRule(TleRepo, "MENU", "10");
-		    setRule(TleRepo, "CALCULATE", "10");
-		    setRule(TleRepo, "PROGRESS", "10");
-		    setRule(TleRepo, "LogicElement", "10");
-		    setRule(TleRepo, "general", "10");
-		    NewRule tLElogic_LOCAL = TleRepo.createRule("local")
+		    NewRepository tleRepo = context.createRepository("EpagesTemplateLanguage", "tle").setName("TLE logic");
+		    setRule(tleRepo, "IF", "10");
+		    setRule(tleRepo, "ELSIF", "10");
+		    setRule(tleRepo, "ELSE", "10");
+		    setRule(tleRepo, "REM", "10");
+		    setRule(tleRepo, "BLOCK", "10");
+		    setRule(tleRepo, "WITH", "10");
+		    setRule(tleRepo, "WITH_ERROR", "10");
+		    setRule(tleRepo, "FUNCTION", "10");
+		    setRule(tleRepo, "MENU", "10");
+		    setRule(tleRepo, "CALCULATE", "10");
+		    setRule(tleRepo, "LogicElement", "10");
+		    setRule(tleRepo, "general", "10");
+		    NewRule tleLogicLocal = tleRepo.createRule("local")
 		    		.setName("TLE locale and set")
 		    		.setHtmlDescription("use of #LOCAL and #SET points to programming logic in template, belongs in controller")
 		    		.setSeverity(Severity.MAJOR);
-		    tLElogic_LOCAL.setDebtSubCharacteristic(INTEGRATION_TESTABILITY)
-		    		.setDebtRemediationFunction(tLElogic_LOCAL.debtRemediationFunctions().constantPerIssue("10min"));
-		    NewRule tlelogic_lonelySet = TleRepo.createRule("lonelySet")
+		    tleLogicLocal.setDebtSubCharacteristic(INTEGRATION_TESTABILITY)
+		    		.setDebtRemediationFunction(tleLogicLocal.debtRemediationFunctions().constantPerIssue("10min"));
+		    NewRule tleLogicLonelySet = tleRepo.createRule("lonelySet")
 		    		.setName("set without local (loose of context)")
 		    		.setHtmlDescription("#SET without #LOCAL (high risk of site effects)")
 		    		.setSeverity(Severity.CRITICAL);
-		    tlelogic_lonelySet.setDebtSubCharacteristic(INTEGRATION_TESTABILITY)
-		    		.setDebtRemediationFunction(tlelogic_lonelySet.debtRemediationFunctions().constantPerIssue("10min"));
+		    tleLogicLonelySet.setDebtSubCharacteristic(INTEGRATION_TESTABILITY)
+		    		.setDebtRemediationFunction(tleLogicLonelySet.debtRemediationFunctions().constantPerIssue("10min"));
 		    // loop issues
-		    NewRule tlelogicNestedLoop = TleRepo.createRule("nestedLoop")
+		    NewRule tlelogicNestedLoop = tleRepo.createRule("nestedLoop")
 		    		.setName("nested loop")
 		    		.setHtmlDescription("bad complexity")
 		    		.setSeverity(Severity.MAJOR);
 		    tlelogicNestedLoop.setDebtSubCharacteristic(INTEGRATION_TESTABILITY)
 		    .setDebtRemediationFunction(tlelogicNestedLoop.debtRemediationFunctions().constantPerIssue("10min"));
 		    
-		    NewRule tlelogicLoopWithSet = TleRepo.createRule("loopWithSet")
+		    NewRule tlelogicLoopWithSet = tleRepo.createRule("loopWithSet")
 		    		.setName("loop with set")
 		    		.setHtmlDescription("loop with set points to progamming with TLE")
 		    		.setSeverity(Severity.CRITICAL);
 		    tlelogicLoopWithSet.setDebtSubCharacteristic(INTEGRATION_TESTABILITY)
 		    .setDebtRemediationFunction(tlelogicLoopWithSet.debtRemediationFunctions().constantPerIssue("10min"));
 		    // javascriptIssue Issue
-		    NewRule javascriptInTemplate = TleRepo.createRule("javascriptInTemplate")
+		    NewRule javascriptInTemplate = tleRepo.createRule("javascriptInTemplate")
 		    		.setName("javascript in template")
 		    		.setHtmlDescription("javascript")
 		    		.setSeverity(Severity.MAJOR);
 		    javascriptInTemplate.setDebtSubCharacteristic(INTEGRATION_TESTABILITY)
 		    .setDebtRemediationFunction(javascriptInTemplate.debtRemediationFunctions().constantPerIssue("59min"));
-		    TleRepo.done();
+		    tleRepo.done();
 		
 	}
 
-	private void setRule(NewRepository TleRepo, String name, String timeInMinutes) {
-		NewRule TLElogic = TleRepo.createRule(name)
+	private void setRule(NewRepository tleRepo, String name, String timeInMinutes) {
+		NewRule tleLogic = tleRepo.createRule(name)
 				.setName("TLE: "+name)
 				.setHtmlDescription("TLE: "+name)
 				.setSeverity(Severity.INFO);
-		TLElogic.setDebtSubCharacteristic(INTEGRATION_TESTABILITY)
-		        .setDebtRemediationFunction(TLElogic.debtRemediationFunctions().constantPerIssue(timeInMinutes+"min"));
+		tleLogic.setDebtSubCharacteristic(INTEGRATION_TESTABILITY)
+		        .setDebtRemediationFunction(tleLogic.debtRemediationFunctions().constantPerIssue(timeInMinutes+"min"));
 	}
 
 }

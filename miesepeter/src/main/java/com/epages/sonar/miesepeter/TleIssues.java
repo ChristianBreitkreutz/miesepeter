@@ -3,6 +3,8 @@ package com.epages.sonar.miesepeter;
 import java.io.File;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.batch.fs.FileSystem;
@@ -19,6 +21,8 @@ import com.epages.sonar.miesepeter.parser.ParseResult;
 import com.epages.sonar.miesepeter.parser.Parser;
 
 public class TleIssues implements Sensor {
+
+	private static final Logger log = LoggerFactory.getLogger(TleIssues.class);
 
 	private FileSystem fs;
 	private ResourcePerspectives perspectives;
@@ -43,81 +47,77 @@ public class TleIssues implements Sensor {
 	private void analyseFile(InputFile inputFile, SensorContext context) {
 		File file = inputFile.file();
 		Issuable issuable = perspectives.as(Issuable.class, inputFile);
-		Parser TleParser = new Parser();
-		ParseResult parseResult = TleParser.parseFile(file);
+		Parser tleParser = new Parser();
+		ParseResult parseResult = tleParser.parseFile(file);
 		List<IssueLine> genericResults = parseResult.getGenericTle();
 		int complexity = 0;
 
 		for (IssueLine result : genericResults) {
-			switch (result.type) {
+			switch (result.getType()) {
 			case "#LOCAL":
 				complexity += 2;
-				triggerIssue(issuable, "local", result.lineNumber, "try not to use a variable in the template (solve this in UI controller)");
+				triggerIssue(issuable, "local", result.getLineNumber(), "try not to use a variable in the template (solve this in UI controller)");
 				break;
 
 			case "#SET":
 				complexity += 2;
-				triggerIssue(issuable, "local", result.lineNumber, "try not to use a variable in the template (solve this in UI controller)");
+				triggerIssue(issuable, "local", result.getLineNumber(), "try not to use a variable in the template (solve this in UI controller)");
 				break;
 
 			case "#IF":
 				complexity += 1;
-				triggerIssue(issuable, "IF", result.lineNumber, "TLE #IF");
+				triggerIssue(issuable, "IF", result.getLineNumber(), "TLE #IF");
 				break;
 				
 			case "#ELSE":
 				complexity += 1;
-				triggerIssue(issuable, "ELSE", result.lineNumber, "TLE #ELSE");
+				triggerIssue(issuable, "ELSE", result.getLineNumber(), "TLE #ELSE");
 				break;
 				
 			case "#ELSIF":
 				complexity += 1;
-				triggerIssue(issuable, "ELSIF", result.lineNumber, "TLE #ELSIF");
+				triggerIssue(issuable, "ELSIF", result.getLineNumber(), "TLE #ELSIF");
 				break;
 			case "#REM":
 				complexity += 1;
-				triggerIssue(issuable, "REM", result.lineNumber, "Comment in TLE");
+				triggerIssue(issuable, "REM", result.getLineNumber(), "Comment in TLE");
 				break;
 			case "#BLOCK":
 				complexity += 1;
-				triggerIssue(issuable, "BLOCK", result.lineNumber, "TLE Block");
+				triggerIssue(issuable, "BLOCK", result.getLineNumber(), "TLE Block");
 				break;
 			case "#WITH":
 				complexity += 1;
-				triggerIssue(issuable, "WITH", result.lineNumber, "TLE #With scope change");
+				triggerIssue(issuable, "WITH", result.getLineNumber(), "TLE #With scope change");
 				break;
 			case "#WITH_ERROR":
 				complexity += 1;
-				triggerIssue(issuable, "WITH_ERROR", result.lineNumber, "TLE error context");
+				triggerIssue(issuable, "WITH_ERROR", result.getLineNumber(), "TLE error context");
 				break;
 			case "#FUNCTION":
 				complexity += 1;
-				triggerIssue(issuable, "FUNCTION", result.lineNumber, "TLE Function call (try to solve this in UI controller)");
+				triggerIssue(issuable, "FUNCTION", result.getLineNumber(), "TLE Function call (try to solve this in UI controller)");
 				break;
 			case "#MENU":
 				complexity += 1;
-				triggerIssue(issuable, "MENU", result.lineNumber, "TLE Menu");
+				triggerIssue(issuable, "MENU", result.getLineNumber(), "TLE Menu");
 				break;
 			case "#CALCULATE":
 				complexity += 1;
-				triggerIssue(issuable, "CALCULATE", result.lineNumber, "Calculation in TLE (try to solve this in UI controller)");
-				break;
-			case "#PROGRESS":
-				complexity += 1;
-				triggerIssue(issuable, "PROGRESS", result.lineNumber, "TLE #PROGRESS");
+				triggerIssue(issuable, "CALCULATE", result.getLineNumber(), "Calculation in TLE (try to solve this in UI controller)");
 				break;
 			case "OR":
 				complexity += 1;
-				triggerIssue(issuable, "LogicElement", result.lineNumber, "(OR) TLE logic increase complexity");
+				triggerIssue(issuable, "LogicElement", result.getLineNumber(), "(OR) TLE logic increase complexity");
 				break;
 			case "AND":
 				complexity += 1;
-				triggerIssue(issuable, "LogicElement", result.lineNumber, "(AND) TLE logic increase complexity");
+				triggerIssue(issuable, "LogicElement", result.getLineNumber(), "(AND) TLE logic increase complexity");
 				break;
 
 			default:
 				complexity += 1;
-				triggerIssue(issuable, "general", result.lineNumber, "default tle logic");
+				triggerIssue(issuable, "general", result.getLineNumber(), "default tle logic");
 				break;
 			}
 		}
@@ -126,24 +126,24 @@ public class TleIssues implements Sensor {
 		List<IssueLine> lonelySetResults = parseResult.getLonelySet();
 		for (IssueLine result : lonelySetResults) {
 			complexity += 2;
-			triggerIssue(issuable, "lonelySet", result.lineNumber, "magic #SET without a 'LOCAL");
+			triggerIssue(issuable, "lonelySet", result.getLineNumber(), "magic #SET without a 'LOCAL");
 		}
 
 		// loopIssues
 		List<IssueLine> loopIssues = parseResult.getLoopIssue();
 		for (IssueLine issueLine : loopIssues) {
-			switch (issueLine.type) {
+			switch (issueLine.getType()) {
 			case "NESTED_LOOP":
 				complexity += 3;
-				triggerIssue(issuable, "nestedLoop", issueLine.lineNumber, "nested loops, increase complexity");
+				triggerIssue(issuable, "nestedLoop", issueLine.getLineNumber(), "nested loops, increase complexity");
 				break;
 			case "VARIABLE_IN_LOOP":
 				complexity += 3;
-				triggerIssue(issuable, "loopWithSet", issueLine.lineNumber, "#LOOP with #SET is programming. This don't belong in TLE");
+				triggerIssue(issuable, "loopWithSet", issueLine.getLineNumber(), "#LOOP with #SET is programming. This don't belong in TLE");
 				break;
 
 			default:
-				System.out.println("ohje");
+				log.warn("Unknown issue type {} in line {}", issueLine.getType(), issueLine.getLineNumber());
 				break;
 			}
 		}
@@ -151,7 +151,7 @@ public class TleIssues implements Sensor {
 		List<IssueLine> javascriptIssues = parseResult.getJavascript();
 		for (IssueLine javascriptIssue : javascriptIssues) {
 			complexity += 1;
-			triggerIssue(issuable, "javascriptInTemplate", javascriptIssue.lineNumber, "javascript in template");
+			triggerIssue(issuable, "javascriptInTemplate", javascriptIssue.getLineNumber(), "javascript in template");
 		}
 		// measures
 		double linesOfCode = (double) (genericResults.size() + loopIssues.size() + javascriptIssues.size());

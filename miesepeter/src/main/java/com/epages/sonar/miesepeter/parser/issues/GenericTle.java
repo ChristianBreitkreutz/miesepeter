@@ -11,7 +11,7 @@ public class GenericTle implements TleParser{
 
 	@Override
 	public List<IssueLine> parse(List<CodeLine> linedFile) {
-		String[] tleList = {"#IF", "#ELSIF", "#ELSE", "#LOCAL", "#SET", "#BLOCK", "#WITH", "#WITH_ERROR", "#FUNCTION", "#MENU", "#CALCULATE", "#PROGRESS", "#REM", "OR", "AND"};
+		String[] tleList = {"#IF", "#ELSIF", "#ELSE", "#LOCAL", "#SET", "#BLOCK", "#WITH", "#WITH_ERROR", "#FUNCTION", "#MENU", "#CALCULATE", "#REM", "OR", "AND"};
 		ArrayList<IssueLine> lineIssues = new ArrayList<>();
 		for (CodeLine line : linedFile) {
 			for (String tle : tleList) {

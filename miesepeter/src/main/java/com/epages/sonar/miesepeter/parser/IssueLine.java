@@ -1,10 +1,20 @@
 package com.epages.sonar.miesepeter.parser;
 
 public class IssueLine {
-	public int lineNumber;
-	public String type;
-	public IssueLine(int lineNumber,String Type) {
+	private final int lineNumber;
+	private final String type;
+
+	public IssueLine(int lineNumber, String type) {
 		this.lineNumber = lineNumber;
-		this.type = Type;
+		this.type = type;
 	}
+
+	public int getLineNumber() {
+		return lineNumber;
+	}
+
+	public String getType() {
+		return type;
+	}
+
 }

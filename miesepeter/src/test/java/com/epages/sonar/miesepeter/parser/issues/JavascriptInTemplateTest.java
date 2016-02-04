@@ -20,10 +20,10 @@ public class JavascriptInTemplateTest {
 		List<IssueLine> lineIssues = new JavaScriptInTemplate().parse(linedFile);
 
 		lineIssues.get(0);
-		assertEquals("JavaScript", lineIssues.get(0).type);
-		assertEquals(3, lineIssues.get(0).lineNumber);
+		assertEquals("JavaScript", lineIssues.get(0).getType());
+		assertEquals(3, lineIssues.get(0).getLineNumber());
 		lineIssues.get(1);
-		assertEquals("JavaScript", lineIssues.get(1).type);
-		assertEquals(5, lineIssues.get(1).lineNumber);
+		assertEquals("JavaScript", lineIssues.get(1).getType());
+		assertEquals(5, lineIssues.get(1).getLineNumber());
 	}
 }

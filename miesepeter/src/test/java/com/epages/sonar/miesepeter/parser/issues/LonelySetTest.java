@@ -22,8 +22,8 @@ public class LonelySetTest {
 
 		List<IssueLine> lineIssues = result.getLonelySet();
 		assertEquals("amount of issues,", 1, lineIssues.size());
-		assertEquals("issue type" ,"LonelySet", lineIssues.get(0).type);
-		assertEquals("line number" ,3, lineIssues.get(0).lineNumber);
+		assertEquals("issue type" ,"LonelySet", lineIssues.get(0).getType());
+		assertEquals("line number" ,3, lineIssues.get(0).getLineNumber());
 	}
 
 }
