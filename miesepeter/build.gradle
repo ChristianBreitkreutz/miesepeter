@@ -1,5 +1,10 @@
-apply plugin: 'java'
-apply plugin: 'eclipse'
+//apply plugin: 'java'
+//apply plugin: 'eclipse'
+plugins {
+  id 'java' // or 'groovy' Must be explicitly applied
+  id 'com.github.johnrengelman.shadow' version '1.2.3'
+  id 'eclipse'
+}
 
 repositories {
     jcenter()
@@ -8,9 +13,10 @@ repositories {
 
 dependencies {
     compile 'org.sonarsource.sonarqube:sonar-plugin-api:5.2'
-    compile 'com.google.guava:guava:19.0'
+    //compile 'com.google.guava:guava:19.0'
     compile 'org.slf4j:slf4j-api:1.7.12'
     // logging impl. is it provided by sonar-runner?
+   	compile 'org.sonarsource.sslr-squid-bridge:sslr-squid-bridge:2.6.1'
     testRuntime 'ch.qos.logback:logback-classic:1.1.3'
     testCompile 'junit:junit:4.12'
 }

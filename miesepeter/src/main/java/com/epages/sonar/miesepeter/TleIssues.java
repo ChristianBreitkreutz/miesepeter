@@ -48,6 +48,8 @@ public class TleIssues implements Sensor {
 		File file = inputFile.file();
 		Issuable issuable = perspectives.as(Issuable.class, inputFile);
 		Parser tleParser = new Parser();
+		// AST
+		// use parser to get AST
 		ParseResult parseResult = tleParser.parseFile(file);
 		List<IssueLine> genericResults = parseResult.getGenericTle();
 		int complexity = 0;
