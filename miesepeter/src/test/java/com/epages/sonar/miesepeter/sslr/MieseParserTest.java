@@ -6,6 +6,7 @@ import java.util.List;
 import org.junit.Test;
 
 import com.sonar.sslr.api.AstNode;
+import com.sonar.sslr.api.AstNodeType;
 
 public class MieseParserTest {
 
@@ -16,11 +17,32 @@ public class MieseParserTest {
 		
 		File file = new File(filePath);
 		
-		final AstNode parser = MieseParser.parseFile(file);
-		List<AstNode> childen = parser.getChildren();
-		System.out.println(childen.toString());
+		final AstNode AstOfFile = MieseParser.parseFile(file);
+//		AstOfFile.
+		AstNodeType var = MieseGrammar.TLEs;
+		List<AstNode> childrenTree = AstOfFile.getChildren(var);
+
+		System.out.println(childrenTree.size());
+
+		for (AstNode astNode : childrenTree) {
+			System.out.println(astNode.getTokenValue());
+			lukeChild(astNode.getChildren(MieseGrammar.TLECondtion));
+			System.out.println(astNode.getTokenLine());
+		}
+//		System.out.println(parser.getChildren(var).toString());
+//		System.out.println(parser.toString());
+//		System.out.println(parser.getTokenLine());
+		System.out.println(AstOfFile.getType());
 //		assertThat(parser);
 		return;
 	}
 
+	private void lukeChild(List<AstNode> astnode ) {
+		for (AstNode astNode2 : astnode) {
+			System.out.println(astNode2.getChildren().toString());
+		}
+		
+	}
+	
 }
+

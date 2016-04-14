@@ -55,6 +55,37 @@ public final class MieseLexer {
 
   }
 
+  public static enum TLEToken implements TokenType {
+
+	  PAREN_L("("), PAREN_R(")"),
+	    BRACE_L("{"), BRACE_R("}"),
+	    EQ("="), COMMA(","), SEMICOLON(";"),
+	    ADD("+"), SUB("-"), MUL("*"), DIV("/"),
+	    EQEQ("=="), NE("!="), LT("<"), LTE("<="), GT(">"), GTE(">="),
+	    INC("++"), DEC("--"),
+	    TLEIF("#IF"), TLEIFEND("#ENDIF"),
+	    HASH("#");
+    private final String value;
+
+    private TLEToken(String value) {
+      this.value = value;
+    }
+
+    @Override
+    public String getName() {
+      return name();
+    }
+
+    @Override
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public boolean hasToBeSkippedFromAst(AstNode node) {
+      return false;
+    }
+  }
   public static enum Punctuators implements TokenType {
 
     PAREN_L("("), PAREN_R(")"),
@@ -63,6 +94,7 @@ public final class MieseLexer {
     ADD("+"), SUB("-"), MUL("*"), DIV("/"),
     EQEQ("=="), NE("!="), LT("<"), LTE("<="), GT(">"), GTE(">="),
     INC("++"), DEC("--"),
+    TLEIF("#IF"), TLEIFEND("#ENDIF"),
     HASH("#");
 
     private final String value;
@@ -131,8 +163,8 @@ public final class MieseLexer {
     return Lexer.builder()
         .withFailIfNoChannelToConsumeOneCharacter(true)
         .withChannel(new IdentifierAndKeywordChannel("[a-zA-Z]([a-zA-Z0-9_]*[a-zA-Z0-9])?+", true, Keywords.values()))
-        .withChannel(regexp(Literals.INTEGER, "[0-9]+"))
-        .withChannel(commentRegexp("(?s)/\\*.*?\\*/"))
+//        .withChannel(regexp(Literals.INTEGER, "[0-9]+"))
+//        .withChannel(commentRegexp("(?s)/\\*.*?\\*/"))
         .withChannel(new PunctuatorChannel(Punctuators.values()))
         .withChannel(new BlackHoleChannel("[ \t\r\n]+"))
         .build();
