@@ -1,36 +1,8 @@
 
 package com.epages.sonar.miesepeter.sslr;
-import com.sonar.sslr.api.Grammar;
-import static com.epages.sonar.miesepeter.sslr.MieseLexer.Keywords.BREAK;
-import static com.epages.sonar.miesepeter.sslr.MieseLexer.Keywords.CONTINUE;
-import static com.epages.sonar.miesepeter.sslr.MieseLexer.Keywords.ELSE;
-import static com.epages.sonar.miesepeter.sslr.MieseLexer.Keywords.IF;
-import static com.epages.sonar.miesepeter.sslr.MieseLexer.Keywords.INT;
-import static com.epages.sonar.miesepeter.sslr.MieseLexer.Keywords.RETURN;
-import static com.epages.sonar.miesepeter.sslr.MieseLexer.Keywords.STRUCT;
-import static com.epages.sonar.miesepeter.sslr.MieseLexer.Keywords.VOID;
-import static com.epages.sonar.miesepeter.sslr.MieseLexer.Keywords.WHILE;
-import static com.epages.sonar.miesepeter.sslr.MieseLexer.Literals.INTEGER;
-import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.ADD;
-import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.BRACE_L;
-import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.BRACE_R;
-import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.COMMA;
-import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.DEC;
-import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.DIV;
-import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.EQ;
-import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.EQEQ;
-import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.GT;
-import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.GTE;
-import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.INC;
-import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.LT;
-import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.LTE;
-import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.MUL;
-import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.NE;
+import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.HASH;
 import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.PAREN_L;
 import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.PAREN_R;
-import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.SEMICOLON;
-import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.SUB;
-import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.HASH;
 import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.TLEIF;
 import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.TLEIFEND;
 import static com.sonar.sslr.api.GenericTokenType.EOF;
@@ -39,67 +11,33 @@ import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
 import org.sonar.sslr.grammar.GrammarRuleKey;
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 
+import com.sonar.sslr.api.Grammar;
+
 public enum MieseGrammar implements GrammarRuleKey {
 
-  BIN_TYPE,
-  BIN_FUNCTION_DEFINITION,
-  BIN_PARAMETER,
-  BIN_VARIABLE_DEFINITION,
-  BIN_FUNCTION_REFERENCE,
-  BIN_VARIABLE_REFERENCE,
-
   COMPILATION_UNIT,
-  DEFINITION,
-  STRUCT_DEFINITION,
-  STRUCT_MEMBER,
-  FUNCTION_DEFINITION,
-  VARIABLE_DEFINITION,
-  PARAMETERS_LIST,
-  PARAMETER_DECLARATION,
-  COMPOUND_STATEMENT,
-  VARIABLE_INITIALIZER,
-  ARGUMENT_EXPRESSION_LIST,
-
-  STATEMENT,
-  EXPRESSION_STATEMENT,
-  RETURN_STATEMENT,
-  CONTINUE_STATEMENT,
-  BREAK_STATEMENT,
-  IF_STATEMENT,
-  WHILE_STATEMENT,
-  CONDITION_CLAUSE,
-  ELSE_CLAUSE,
-  NO_COMPLEXITY_STATEMENT,
-
   EXPRESSION,
-  ASSIGNMENT_EXPRESSION,
-  RELATIONAL_EXPRESSION,
-  RELATIONAL_OPERATOR,
-  ADDITIVE_EXPRESSION,
-  ADDITIVE_OPERATOR,
-  MULTIPLICATIVE_EXPRESSION,
-  MULTIPLICATIVE_OPERATOR,
-  UNARY_EXPRESSION,
-  UNARY_OPERATOR,
-  POSTFIX_EXPRESSION,
-  POSTFIX_OPERATOR,
-  // --------------------- new
-//  TLEs,
+
   TLE,
   TLEVar,
-  TLECondtion,
+  BODY,
+  TLECondition,
 
   PRIMARY_EXPRESSION;
 
   public static Grammar create() {
     LexerfulGrammarBuilder b = LexerfulGrammarBuilder.create();
 
-    b.rule(TLECondtion).is(TLEIF, PAREN_L, TLEVar, PAREN_R, b.optional(TLE),TLEIFEND);
-    //b.rule(TLEs).is(b.oneOrMore(TLE));
+    b.rule(EXPRESSION).is(
+    		b.firstOf(
+    				TLEVar,
+    				TLE
+    ));
+    b.rule(TLECondition).is(TLEIF, PAREN_L, EXPRESSION, PAREN_R, b.optional(TLE),TLEIFEND);
     b.rule(TLE).is(
     		b.firstOf(
     				TLEVar,
-    				TLECondtion
+    				TLECondition
     ));
     b.rule(COMPILATION_UNIT).is(b.zeroOrMore(TLE), EOF);
     b.rule(TLEVar).is(HASH, IDENTIFIER);
@@ -206,7 +144,7 @@ public enum MieseGrammar implements GrammarRuleKey {
 //        BIN_VARIABLE_REFERENCE,
 //        b.sequence(PAREN_L, EXPRESSION, PAREN_R)));
 
-    b.setRootRule(COMPILATION_UNIT);
+    b.setRootRule(TLE);
 
     return b.build();
   }

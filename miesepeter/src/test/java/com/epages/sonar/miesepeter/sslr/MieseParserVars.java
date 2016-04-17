@@ -8,7 +8,6 @@ import java.util.List;
 import org.junit.Test;
 
 import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.GenericTokenType;
 
 public class MieseParserVars {
 
