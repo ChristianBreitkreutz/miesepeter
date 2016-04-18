@@ -3,6 +3,8 @@ package com.epages.sonar.miesepeter.sslr;
 import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.HASH;
 import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.PAREN_L;
 import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.PAREN_R;
+import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.SQBRACE_L;
+import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.SQBRACE_R;
 import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.TLEIF;
 import static com.epages.sonar.miesepeter.sslr.MieseLexer.Punctuators.TLEIFEND;
 import static com.sonar.sslr.api.GenericTokenType.EOF;
@@ -11,6 +13,7 @@ import static com.sonar.sslr.api.GenericTokenType.IDENTIFIER;
 import org.sonar.sslr.grammar.GrammarRuleKey;
 import org.sonar.sslr.grammar.LexerfulGrammarBuilder;
 
+import com.epages.sonar.miesepeter.sslr.MieseLexer.Literals;
 import com.sonar.sslr.api.Grammar;
 
 public enum MieseGrammar implements GrammarRuleKey {
@@ -20,6 +23,7 @@ public enum MieseGrammar implements GrammarRuleKey {
 
   TLE,
   TLEVar,
+  MODIFIER,
   BODY,
   TLECondition,
 
@@ -36,11 +40,18 @@ public enum MieseGrammar implements GrammarRuleKey {
     b.rule(TLECondition).is(TLEIF, PAREN_L, EXPRESSION, PAREN_R, b.optional(TLE),TLEIFEND);
     b.rule(TLE).is(
     		b.firstOf(
-    				TLEVar,
+    				b.oneOrMore(TLEVar),
     				TLECondition
     ));
     b.rule(COMPILATION_UNIT).is(b.zeroOrMore(TLE), EOF);
-    b.rule(TLEVar).is(HASH, IDENTIFIER);
+    b.rule(TLEVar).is(HASH, IDENTIFIER,b.optional(SQBRACE_L, MODIFIER, SQBRACE_R));
+    b.rule(MODIFIER).is(
+    		b.firstOf(
+    				"Money",
+    				"Time",
+    				b.oneOrMore(Literals.INTEGER)
+    				)
+    		);
 //    b.rule(DEFINITION).is(b.firstOf(
 //        STRUCT_DEFINITION,
 //        FUNCTION_DEFINITION,
