@@ -1,4 +1,4 @@
-package com.epages.sonar.miesepeter.sslr;
+
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,6 +7,9 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.epages.sonar.miesepeter.sslr.AstTools;
+import com.epages.sonar.miesepeter.sslr.MieseGrammar;
+import com.epages.sonar.miesepeter.sslr.MieseParser;
 import com.sonar.sslr.api.AstNode;
 
 public class MieseParserVars {
@@ -26,15 +29,19 @@ public class MieseParserVars {
 		assertEquals("test var name", AstTools.getNameOfVar(listItemTwo), "VARIABLE1");
 
 		AstNode listItemThree = allVars.get(2);
+		List <AstNode> lala = listItemThree.getFirstDescendant(MieseGrammar.MODIFIER).getChildren();
+		for (AstNode astNode : lala) {
+			System.out.println(astNode.toString());
+		}
 		assertEquals("variable MODIFIER is in line ", 4, AstTools.getLineNumberOfVar(listItemThree));
 		assertEquals("test var name", AstTools.getNameOfVar(listItemThree), "MODIFIER");
-		assertEquals("test var modifierName", AstTools.getModifierOfVar(listItemThree), "Money");
+		assertEquals("test var modifierName", "money", AstTools.getFormaterOfVar(listItemThree));
 		
 		//MODIFIER_NUMBER
 		AstNode listItemFour = allVars.get(3);
 		assertEquals("variable MODIFIER is in line ", 5, AstTools.getLineNumberOfVar(listItemFour));
 		assertEquals("test var name", AstTools.getNameOfVar(listItemFour), "MODIFIER_NUMBER");
-		assertEquals("test var modifierName", AstTools.getModifierOfVar(listItemFour), "689");
+		assertEquals("test var modifierName", AstTools.getFormaterOfVar(listItemFour), "689");
 		
 	}
 

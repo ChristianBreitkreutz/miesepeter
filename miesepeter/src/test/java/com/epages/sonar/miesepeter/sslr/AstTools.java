@@ -14,9 +14,10 @@ public class AstTools {
 		AstNode identifiereOfVar = getIdentifierOfVar(varElement);
 		return identifiereOfVar.getTokenLine();
 	}
-	public static String getModifierOfVar(AstNode varElement) {
+	public static String getFormaterOfVar(AstNode varElement) {
 		AstNode modifierOfVar = varElement.getFirstDescendant(MieseGrammar.MODIFIER);
-		return modifierOfVar.getTokenValue().toString();
+		AstNode formater = varElement.getFirstDescendant(MieseGrammar.FORMATER);
+		return formater.getTokenValue().toString();
 	}
 
 	private static AstNode getIdentifierOfVar(AstNode varElement) {
